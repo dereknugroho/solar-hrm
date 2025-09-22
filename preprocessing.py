@@ -4,6 +4,16 @@ import pandas as pd
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
+'''
+Production-grade enhancements:
+1. Use a JSON config file to load paths
+2. Error handling if reading CSV or Parquet fails
+3. Use logging module instead of print() statements and redirect log to file
+4. Log timing for preprocessing tasks
+5. Implement chunked reading
+6. Do not mutate dataframes in place
+'''
+
 def drop_unused_columns(solar_df):
     """Drop unused columns WATT_HOUR and KILOWATT_HOUR."""
     return solar_df.drop(columns=['WATT_HOUR', 'KILOWATT_HOUR'])
@@ -12,8 +22,6 @@ def clean_community_names(solar_df):
     """Apply corrections to COMMUNITY_NAME column."""
     solar_df['COMMUNITY_NAME'] = solar_df['COMMUNITY_NAME'].replace({'dartmouth': 'Dartmouth'})
     return solar_df
-
-# 2016.11.02 07:55:00
 
 def convert_object_dtypes(solar_df):
     """Convert dtype object columns to proper dtype."""
