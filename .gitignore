@@ -1,3 +1,11 @@
-*.csv
-*.parquet
+# OS files
 .DS_Store
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Generated outputs
+data/
+logs/
+parquets/
