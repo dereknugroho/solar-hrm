@@ -43,7 +43,6 @@ def preprocess(use_preprocessed):
     - Save a parquet of the processed data
     """
     if not use_preprocessed:
-        print('parquet not detected, generating parquet...')
         # Load csv into dataframe
         solar_df = pd.read_csv(cfg['filepaths']['input_csv'])
 
@@ -67,11 +66,9 @@ def preprocess(use_preprocessed):
             cfg['filepaths']['parquet_processed'],
             index=False,
         )
-        print('parquet generated.')
 
     # Load parquet into dataframe
     solar_df = pd.read_parquet(cfg['filepaths']['parquet_processed'])
-    print('parquet detected, parquet loaded.')
 
     # Show column information for solar_df
     for col in solar_df.columns:
