@@ -52,9 +52,6 @@ def preprocess(use_preprocessed):
             index=False,
         )
 
-        # Drop WATT_HOUR and KILOWATT_HOUR columns
-        solar_df = drop_unused_columns(solar_df)
-
         # Clean values in COMMUNITY_NAME column
         solar_df = clean_community_names(solar_df)
 
