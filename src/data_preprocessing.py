@@ -1,7 +1,19 @@
+"""
+Running this module will perform all of the following tasks:
+
+- Save a parquet of the raw data
+- Drop unused columns
+- Clean values
+- Convert column types
+- Save a parquet of the processed data
+"""
+
+import os
+
 import pandas as pd
 
-from src.utils.config_loader import config
-from src.utils.preprocessing_utils import ensure_dataframe
+from utils.config_loader import config
+from utils.preprocessing_utils import ensure_dataframe
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -75,3 +87,8 @@ def preprocess(use_preprocessed):
         print('===========================')
 
     return solar_df
+
+if __name__ == '__main__':
+    solar_df = preprocess(
+        use_preprocessed=os.path.exists(config['preprocessing']['filepaths']['parquet_processed'])
+    )
