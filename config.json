@@ -1,18 +1,15 @@
 {
     "preprocessing": {
         "filepaths": {
-            "input_csv": "data/Solar_City_Micro_Inverters.csv",
-            "parquet_processed": "parquets/solar_df.parquet",
-            "parquet_raw": "parquets/solar_df_unprocessed.parquet"
+            "input_csv": "data/unprocessed/Solar_City_Micro_Inverters.csv",
+            "parquet_processed": "data/processed/solar_df.parquet",
+            "parquet_raw": "data/processed/solar_df_unprocessed.parquet"
         },
         "community_name_corrections": {"dartmouth": "Dartmouth"},
         "date_format": "%Y.%m.%d %H:%M:%S",
         "drop_columns": ["WATT_HOUR", "KILOWATT_HOUR"]
     },
     "logging": {
-        "preprocessing_logfile": "logs/preprocessing.log",
-        "eda_logfile": "logs/eda.log",
-        "regression_logfile": "logs/regression.log",
-        "neural_network_logfile": "log/neural_network.log"
+        "preprocessing_logfile": "logs/preprocessing.log"
     }
 }
