@@ -1,23 +1,19 @@
-"""
-Running this module will perform all of the following tasks:
+import sys
+from pathlib import Path
 
-- Save a parquet of the raw data
-- Drop unused columns
-- Clean values
-- Convert column types
-- Save a parquet of the processed data
-"""
+# --- Safety for running this script directly from src/ ---
+if __package__ is None:
+    project_root = Path(__file__).resolve().parents[1]
+    if str(project_root) not in sys.path:
+        sys.path.append(str(project_root))
 
 import os
-
 import pandas as pd
 
-from utils.config import PREPROCESSING
-from utils.paths import from_root
-from utils.preprocessing_utils import ensure_dataframe
+from src.utils.config import PREPROCESSING
+from src.utils.paths import from_root
+from src.utils.preprocessing_utils import ensure_dataframe
 
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
 
 @ensure_dataframe
 def drop_unused_columns(solar_df: pd.DataFrame) -> pd.DataFrame:
@@ -82,13 +78,6 @@ def preprocess(use_preprocessed) -> pd.DataFrame:
         from_root(PREPROCESSING['filepaths']['parquet_processed']),
     )
 
-    # Show column information for solar_df
-    for col in solar_df.columns:
-        print(f'Column:\t{col} [{solar_df[col].dtype}]')
-        print(f'Number of unique values in {col}: {solar_df[col].nunique()}')
-        print(f'Number of NA values in {col}: {solar_df[col].isna().sum()}')
-        print('===========================')
-
     return solar_df
 
 if __name__ == '__main__':
@@ -97,3 +86,8 @@ if __name__ == '__main__':
             from_root(PREPROCESSING['filepaths']['parquet_processed'])
         )
     )
+    for col in solar_df.columns:
+        print(f'Column:\t{col} [{solar_df[col].dtype}]')
+        print(f'Number of unique values in {col}: {solar_df[col].nunique()}')
+        print(f'Number of NA values in {col}: {solar_df[col].isna().sum()}')
+        print('===========================')
