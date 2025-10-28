@@ -12,23 +12,22 @@ import os
 
 import pandas as pd
 
-from utils.config_loader import config
+from utils.config import PREPROCESSING
+from utils.paths import from_root
 from utils.preprocessing_utils import ensure_dataframe
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
-cfg = config['preprocessing']
-
 @ensure_dataframe
 def drop_unused_columns(solar_df: pd.DataFrame) -> pd.DataFrame:
     """Drop unused columns WATT_HOUR and KILOWATT_HOUR."""
-    return solar_df.drop(columns=cfg['drop_columns'])
+    return solar_df.drop(columns=PREPROCESSING['drop_columns'])
 
 @ensure_dataframe
 def clean_community_names(solar_df: pd.DataFrame) -> pd.DataFrame:
     """Apply corrections to COMMUNITY_NAME column."""
-    solar_df['COMMUNITY_NAME'] = solar_df['COMMUNITY_NAME'].replace(cfg['community_name_corrections'])
+    solar_df['COMMUNITY_NAME'] = solar_df['COMMUNITY_NAME'].replace(PREPROCESSING['community_name_corrections'])
     return solar_df
 
 @ensure_dataframe
@@ -36,7 +35,7 @@ def convert_object_dtypes(solar_df: pd.DataFrame) -> pd.DataFrame:
     """Convert dtype object columns to proper dtype."""
     solar_df['DATE'] = pd.to_datetime(
         solar_df['DATE'],
-        format=cfg['date_format'],
+        format=PREPROCESSING['date_format'],
         errors='coerce',
     )
 
@@ -45,7 +44,7 @@ def convert_object_dtypes(solar_df: pd.DataFrame) -> pd.DataFrame:
 
     return solar_df
 
-def preprocess(use_preprocessed):
+def preprocess(use_preprocessed) -> pd.DataFrame:
     """
     Perform the following preprocessing tasks:
     - Save a parquet of the raw data
@@ -56,11 +55,13 @@ def preprocess(use_preprocessed):
     """
     if not use_preprocessed:
         # Load csv into dataframe
-        solar_df = pd.read_csv(cfg['filepaths']['input_csv'])
+        solar_df = pd.read_csv(
+            from_root(PREPROCESSING['filepaths']['input_csv']),
+        )
 
         # Save unprocessed data into parquet
         solar_df.to_parquet(
-            cfg['filepaths']['parquet_raw'],
+            from_root(PREPROCESSING['filepaths']['parquet_raw']),
             index=False,
         )
 
@@ -72,12 +73,14 @@ def preprocess(use_preprocessed):
 
         # Save preprocessed data into parquet
         solar_df.to_parquet(
-            cfg['filepaths']['parquet_processed'],
+            from_root(PREPROCESSING['filepaths']['parquet_processed']),
             index=False,
         )
 
     # Load parquet into dataframe
-    solar_df = pd.read_parquet(cfg['filepaths']['parquet_processed'])
+    solar_df = pd.read_parquet(
+        from_root(PREPROCESSING['filepaths']['parquet_processed']),
+    )
 
     # Show column information for solar_df
     for col in solar_df.columns:
@@ -90,5 +93,7 @@ def preprocess(use_preprocessed):
 
 if __name__ == '__main__':
     solar_df = preprocess(
-        use_preprocessed=os.path.exists(config['preprocessing']['filepaths']['parquet_processed'])
+        use_preprocessed=os.path.exists(
+            from_root(PREPROCESSING['filepaths']['parquet_processed'])
+        )
     )
