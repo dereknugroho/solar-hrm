@@ -10,7 +10,8 @@ def _find_project_root() -> Path:
     for parent in current.parents:
         if (parent / "config.json").exists() or (parent / ".git").exists():
             return parent
-    # fallback: assume src/ is directly under root
+
+    # Fallback: assume src/ is directly under root
     return current.parents[2]
 
 PROJECT_ROOT = _find_project_root()
