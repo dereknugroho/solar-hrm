@@ -1,7 +1,7 @@
 """Load and expose configuration settings for the project."""
 import json
 
-from utils.paths import from_root
+from src.utils.paths import from_root
 
 def load_config(filename: str = "config.json") -> dict:
     """Load a JSON configuration file from the project root."""
