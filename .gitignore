@@ -9,3 +9,6 @@ __pycache__/
 data/
 logs/
 parquets/
+
+# To-do list
+to-do.txt
