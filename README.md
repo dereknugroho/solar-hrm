@@ -10,7 +10,7 @@ The data is the result of HRM's [Solar City](https://www.halifax.ca/home-propert
 
 :white_check_mark: Data Collection
 
-:white_large_square: Data Preprocessing
+:white_check_mark: Data Preprocessing
 
 :white_large_square: Exploratory Data Analysis
 
