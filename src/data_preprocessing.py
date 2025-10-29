@@ -14,11 +14,15 @@ from src.utils.config import PREPROCESSING
 from src.utils.paths import from_root
 from src.utils.preprocessing_utils import ensure_dataframe
 
-
 @ensure_dataframe
 def drop_unused_columns(solar_df: pd.DataFrame) -> pd.DataFrame:
     """Drop unused columns WATT_HOUR and KILOWATT_HOUR."""
     return solar_df.drop(columns=PREPROCESSING['drop_columns'])
+
+@ensure_dataframe
+def rename_DATE_column(solar_df: pd.DataFrame) -> pd.DataFrame:
+    """Rename DATE column to DATETIME."""
+    return solar_df.rename(columns=PREPROCESSING['rename_columns'])
 
 @ensure_dataframe
 def clean_community_names(solar_df: pd.DataFrame) -> pd.DataFrame:
@@ -29,8 +33,8 @@ def clean_community_names(solar_df: pd.DataFrame) -> pd.DataFrame:
 @ensure_dataframe
 def convert_object_dtypes(solar_df: pd.DataFrame) -> pd.DataFrame:
     """Convert dtype object columns to proper dtype."""
-    solar_df['DATE'] = pd.to_datetime(
-        solar_df['DATE'],
+    solar_df['DATETIME'] = pd.to_datetime(
+        solar_df['DATETIME'],
         format=PREPROCESSING['date_format'],
         errors='coerce',
     )
@@ -45,6 +49,7 @@ def preprocess(use_preprocessed) -> pd.DataFrame:
     Perform the following preprocessing tasks:
     - Save a parquet of the raw data
     - Drop unused columns
+    - Rename columns
     - Clean values
     - Convert column types
     - Save a parquet of the processed data
@@ -60,6 +65,12 @@ def preprocess(use_preprocessed) -> pd.DataFrame:
             from_root(PREPROCESSING['filepaths']['parquet_raw']),
             index=False,
         )
+
+        # Drop unused columns
+        solar_df = drop_unused_columns(solar_df)
+
+        # Rename DATE column to DATETIME
+        solar_df = rename_DATE_column(solar_df)
 
         # Clean values in COMMUNITY_NAME column
         solar_df = clean_community_names(solar_df)
