@@ -5,6 +5,9 @@
             "parquet_processed": "data/processed/solar_df.parquet",
             "parquet_raw": "data/processed/solar_df_unprocessed.parquet"
         },
+        "rename_columns": {
+            "DATE": "DATETIME"
+        },
         "community_name_corrections": {"dartmouth": "Dartmouth"},
         "date_format": "%Y.%m.%d %H:%M:%S",
         "drop_columns": ["WATT_HOUR", "KILOWATT_HOUR"]
