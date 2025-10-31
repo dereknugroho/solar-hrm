@@ -9,6 +9,7 @@ This is the complete ML pipeline for predicting solar energy production in the H
 - Data Preprocessing
 - Exploratory Data Analysis
 - Feature Engineering
+- Data Partitioning
 
 **Predictive Phase**
 - ML Modelling
