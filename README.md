@@ -1,23 +1,16 @@
 # Solar Energy Consumption - Halifax Regional Municipality
 
-This repo serves as the full machine learning pipeline for predicting solar energy consumption in the Halifax Regional Municipality (HRM) from 2026 to 2032.
-
-The ML models are trained on data collected from 25 million microinverter readings across the HRM from 2016 to 2024.
-
-The data is the result of HRM's [Solar City](https://www.halifax.ca/home-property/solar-projects/about-solar-city) initiative.
+This is the complete ML pipeline for predicting solar energy production in the Halifax Regional Municipality (HRM) from 2026 to 2036.
 
 ## To Do
 
-:white_check_mark: Data Collection
+**Exploratory Phase**
+- Data Collection
+- Data Preprocessing
+- Exploratory Data Analysis
+- Feature Engineering
 
-:white_check_mark: Data Preprocessing
-
-:white_large_square: Exploratory Data Analysis
-
-:white_large_square: Feature Engineering
-
-:white_large_square: ML Modelling
-
-:white_large_square: Model Evaluation
-
-:white_large_square: Forecasting and Results
+**Predictive Phase**
+- ML Modelling
+- Model Evaluation
+- Forecasting and Results
