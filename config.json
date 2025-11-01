@@ -1,10 +1,10 @@
 {
+    "filepaths": {
+        "input_csv": "data/unprocessed/Solar_City_Micro_Inverters.csv",
+        "parquet_processed": "data/processed/solar_df.parquet",
+        "parquet_raw": "data/processed/solar_df_unprocessed.parquet"
+    },
     "preprocessing": {
-        "filepaths": {
-            "input_csv": "data/unprocessed/Solar_City_Micro_Inverters.csv",
-            "parquet_processed": "data/processed/solar_df.parquet",
-            "parquet_raw": "data/processed/solar_df_unprocessed.parquet"
-        },
         "rename_columns": {
             "DATE": "DATETIME"
         },
