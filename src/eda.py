@@ -12,21 +12,15 @@ import matplotlib.pyplot as plt
 from src.utils.config import FILEPATHS
 from src.utils.utils import fetch_parquet
 
-def _plot_watts_vs_datetime(group_by: str | None, daily_average: bool):
-    """Internal function that handles shared plotting logic."""
-    pass
-
-def watts_vs_datetime(daily_average: bool = True):
-    """Plot solar production in watts versus datetime."""
-    return _plot_watts_vs_datetime(group_by=None, daily_average=daily_average)
-
-def watts_vs_datetime_by_community(daily_average: bool = True):
-    """Plot solar production in watts versus datetime grouped by community."""
-    return _plot_watts_vs_datetime(group_by="community", daily_average=daily_average)
-
-def watts_vs_datetime_by_sortation_area(daily_average: bool = True):
-    """Plot solar production in watts versus datetime grouped by sortation area."""
-    return _plot_watts_vs_datetime(group_by="sortation_area", daily_average=daily_average)
+"""
+- WATTS over DATETIME
+    * GROUP_BY (all, COMMUNITY_NAME, FORWARD_SORTATION_AREA)
+    * AGGREGATION (sum, min, avg, median, max)
+    - Hourly (24 hours)
+    - Daily (one month)
+    - Monthly (one year)
+    - Yearly (2016-2024)
+"""
 
 if __name__ == '__main__':
     solar_df = fetch_parquet(FILEPATHS['parquet_processed'])
