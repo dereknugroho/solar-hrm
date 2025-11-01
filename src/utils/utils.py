@@ -2,6 +2,8 @@ import pandas as pd
 
 from functools import wraps
 
+from src.utils.config import from_root
+
 def ensure_dataframe(func):
     """Decorator to check that the first argument is a pandas DataFrame."""
     @wraps(func)
@@ -11,3 +13,7 @@ def ensure_dataframe(func):
         return func(df, *args, **kwargs)
 
     return wrapper
+
+def fetch_parquet(filepath: str) -> pd.DataFrame:
+    """Load processed parquet into master dataframe."""
+    return pd.read_parquet(from_root(filepath))
