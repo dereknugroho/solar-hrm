@@ -3,7 +3,7 @@ import os
 import pandas as pd
 
 from src.data_preprocessing import preprocess
-from src.utils.config import PREPROCESSING
+from src.utils.config import FILEPATHS
 from src.utils.paths import from_root
 
 # Show all rows
@@ -18,7 +18,7 @@ def main():
     #################
     solar_df = preprocess(
         use_preprocessed=os.path.exists(
-            from_root(PREPROCESSING['filepaths']['parquet_processed'])
+            from_root(FILEPATHS['parquet_processed'])
         )
     )
 
@@ -29,9 +29,9 @@ def main():
         print(f'Number of NA values in {col}: {solar_df[col].isna().sum()}')
         print('===========================')
 
-    # print(f'{solar_df.head(50)}')
-    # print(f'===================')
-    # print(f'{solar_df.tail(50)}')
+    print(f'{solar_df.head()}')
+    print(f'===================')
+    print(f'{solar_df.tail()}')
 
     #############################
     # Exploratory Data Analysis #
