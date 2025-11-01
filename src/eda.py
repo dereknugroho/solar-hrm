@@ -7,15 +7,10 @@ if __package__ is None:
     if str(project_root) not in sys.path:
         sys.path.append(str(project_root))
 
-import os
-import pandas as pd
+import matplotlib.pyplot as plt
 
-from src.utils.config import PREPROCESSING
-from src.utils.paths import from_root
-
-def fetch_parquet(filepath: str) -> pd.DataFrame:
-    """Load processed parquet into master dataframe."""
-    return pd.read_parquet(from_root(filepath))
+from src.utils.config import FILEPATHS
+from src.utils.utils import fetch_parquet
 
 def _plot_watts_vs_datetime(group_by: str | None, daily_average: bool):
     """Internal function that handles shared plotting logic."""
@@ -34,4 +29,10 @@ def watts_vs_datetime_by_sortation_area(daily_average: bool = True):
     return _plot_watts_vs_datetime(group_by="sortation_area", daily_average=daily_average)
 
 if __name__ == '__main__':
-    pass
+    solar_df = fetch_parquet(FILEPATHS['parquet_processed'])
+
+    for col in solar_df.columns:
+        print(f'Column:\t{col} [{solar_df[col].dtype}]')
+        print(f'Number of unique values in {col}: {solar_df[col].nunique()}')
+        print(f'Number of NA values in {col}: {solar_df[col].isna().sum()}')
+        print('===========================')
