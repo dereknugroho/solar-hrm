@@ -10,9 +10,9 @@ if __package__ is None:
 import os
 import pandas as pd
 
-from src.utils.config import PREPROCESSING
+from src.utils.config import FILEPATHS, PREPROCESSING
 from src.utils.paths import from_root
-from src.utils.preprocessing_utils import ensure_dataframe
+from src.utils.utils import ensure_dataframe
 
 @ensure_dataframe
 def drop_unused_columns(solar_df: pd.DataFrame) -> pd.DataFrame:
@@ -57,12 +57,12 @@ def preprocess(use_preprocessed) -> pd.DataFrame:
     if not use_preprocessed:
         # Load csv into dataframe
         solar_df = pd.read_csv(
-            from_root(PREPROCESSING['filepaths']['input_csv']),
+            from_root(FILEPATHS['input_csv']),
         )
 
         # Save unprocessed data into parquet
         solar_df.to_parquet(
-            from_root(PREPROCESSING['filepaths']['parquet_raw']),
+            from_root(FILEPATHS['parquet_raw']),
             index=False,
         )
 
@@ -80,13 +80,13 @@ def preprocess(use_preprocessed) -> pd.DataFrame:
 
         # Save preprocessed data into parquet
         solar_df.to_parquet(
-            from_root(PREPROCESSING['filepaths']['parquet_processed']),
+            from_root(FILEPATHS['parquet_processed']),
             index=False,
         )
 
     # Load parquet into dataframe
     solar_df = pd.read_parquet(
-        from_root(PREPROCESSING['filepaths']['parquet_processed']),
+        from_root(FILEPATHS['parquet_processed']),
     )
 
     return solar_df
@@ -94,9 +94,10 @@ def preprocess(use_preprocessed) -> pd.DataFrame:
 if __name__ == '__main__':
     solar_df = preprocess(
         use_preprocessed=os.path.exists(
-            from_root(PREPROCESSING['filepaths']['parquet_processed'])
+            from_root(FILEPATHS['parquet_processed'])
         )
     )
+
     for col in solar_df.columns:
         print(f'Column:\t{col} [{solar_df[col].dtype}]')
         print(f'Number of unique values in {col}: {solar_df[col].nunique()}')
