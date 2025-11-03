@@ -1,4 +1,4 @@
-# Solar Energy Consumption - Halifax Regional Municipality
+# Solar Energy Production - Halifax Regional Municipality
 
 This is the complete ML pipeline for predicting solar energy production in the Halifax Regional Municipality (HRM) from 2026 to 2036.
 
