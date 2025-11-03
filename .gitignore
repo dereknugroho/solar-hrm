@@ -9,6 +9,7 @@ __pycache__/
 data/
 logs/
 parquets/
+.ipynb_checkpoints/
 
 # To-do list
 notes.txt
