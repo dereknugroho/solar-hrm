@@ -15,5 +15,9 @@ def load_config(filename: str = 'config.json') -> dict:
         raise ValueError(f'Invalid JSON in {path}: {e}')
 
 CONFIG = load_config()
+
+AGG_METHODS = CONFIG.get('aggregation_methods', {})
 FILEPATHS = CONFIG.get('filepaths', {})
 PREPROCESSING = CONFIG.get('preprocessing', {})
+TIME_SEG_CODES = CONFIG.get('time_segmentation_interval_codes', {})
+TIME_SEG = CONFIG.get('time_segmentation_interval', {})
