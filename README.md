@@ -1,6 +1,6 @@
 # Solar Energy Production - Halifax Regional Municipality
 
-This is the complete ML pipeline for predicting solar energy production in the Halifax Regional Municipality (HRM) from 2026 to 2036.
+Solar-HRM is an end-to-end ML prediction model for forecasting solar energy production in the Halifax Regional Municipality (HRM).
 
 ## To Do
 
