@@ -12,6 +12,9 @@
         "date_format": "%Y.%m.%d %H:%M:%S",
         "drop_columns": ["WATT_HOUR", "KILOWATT_HOUR"]
     },
+    "aggregation_methods": ["sum", "min", "mean", "median", "max"],
+    "time_segmentation_interval_codes": ["H", "D", "M", "Y"],
+    "time_segmentation_interval": ["hour", "day", "month", "year"],
     "logging": {
         "preprocessing_logfile": "logs/preprocessing.log"
     }
