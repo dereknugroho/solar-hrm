@@ -6,11 +6,17 @@
     },
     "preprocessing": {
         "rename_columns": {
-            "DATE": "DATETIME"
+            "SYSTEM_ID": "installation_id",
+            "DATE": "timestamp",
+            "PANELS_REPORTING_MICRO_INVERTER": "num_panels",
+            "WATTS": "power_watts_5min_avg",
+            "WATT_HOUR": "energy_watt_hour",
+            "COMMUNITY_NAME": "community",
+            "FORWARD_SORTATION_AREA": "fwd_sortation_area"
         },
         "community_name_corrections": {"dartmouth": "Dartmouth"},
         "date_format": "%Y.%m.%d %H:%M:%S",
-        "drop_columns": ["WATT_HOUR", "KILOWATT_HOUR"]
+        "drop_columns": ["KILOWATT_HOUR"]
     },
     "aggregation_methods": ["sum", "min", "mean", "median", "max"],
     "time_segmentation_interval_codes": ["H", "D", "M", "Y"],
