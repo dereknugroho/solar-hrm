@@ -20,34 +20,34 @@ def drop_unused_columns(solar_df: pd.DataFrame) -> pd.DataFrame:
     return solar_df.drop(columns=PREPROCESSING['drop_columns'])
 
 @ensure_dataframe
-def rename_DATE_column(solar_df: pd.DataFrame) -> pd.DataFrame:
+def rename_columns(solar_df: pd.DataFrame) -> pd.DataFrame:
     """Rename DATE column to DATETIME."""
     return solar_df.rename(columns=PREPROCESSING['rename_columns'])
 
 @ensure_dataframe
-def clean_community_names(solar_df: pd.DataFrame) -> pd.DataFrame:
+def clean_columns(solar_df: pd.DataFrame) -> pd.DataFrame:
     """Apply corrections to COMMUNITY_NAME column."""
-    solar_df['COMMUNITY_NAME'] = solar_df['COMMUNITY_NAME'].replace(PREPROCESSING['community_name_corrections'])
+    solar_df['community'] = solar_df['community'].replace(PREPROCESSING['community_name_corrections'])
     return solar_df
 
 @ensure_dataframe
 def convert_object_dtypes(solar_df: pd.DataFrame) -> pd.DataFrame:
     """Convert dtype object columns to proper dtype."""
-    solar_df['DATETIME'] = pd.to_datetime(
-        solar_df['DATETIME'],
+    solar_df['timestamp'] = pd.to_datetime(
+        solar_df['timestamp'],
         format=PREPROCESSING['date_format'],
         errors='coerce',
     )
 
-    solar_df['COMMUNITY_NAME'] = solar_df['COMMUNITY_NAME'].astype('category')
-    solar_df['FORWARD_SORTATION_AREA'] = solar_df['FORWARD_SORTATION_AREA'].astype('category')
+    solar_df['community'] = solar_df['community'].astype('category')
+    solar_df['fwd_sortation_area'] = solar_df['fwd_sortation_area'].astype('category')
 
     return solar_df
 
-def preprocess(use_preprocessed) -> pd.DataFrame:
+def preprocess(use_preprocessed: bool) -> pd.DataFrame:
     """
     Perform the following preprocessing tasks:
-    - Save a parquet of the raw data
+    - Save a parquet of the unprocessed data
     - Drop unused columns
     - Rename columns
     - Clean values
@@ -66,16 +66,10 @@ def preprocess(use_preprocessed) -> pd.DataFrame:
             index=False,
         )
 
-        # Drop unused columns
+        # Run preprocessing pipeline with parameters loaded from config.json
         solar_df = drop_unused_columns(solar_df)
-
-        # Rename DATE column to DATETIME
-        solar_df = rename_DATE_column(solar_df)
-
-        # Clean values in COMMUNITY_NAME column
-        solar_df = clean_community_names(solar_df)
-
-        # Convert object dtype columns to proper dtype
+        solar_df = rename_columns(solar_df)
+        solar_df = clean_columns(solar_df)
         solar_df = convert_object_dtypes(solar_df)
 
         # Save preprocessed data into parquet
