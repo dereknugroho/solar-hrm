@@ -1,9 +1,9 @@
 {
     "filepaths": {
-        "input_csv": "data/unprocessed/Solar_City_Micro_Inverters.csv",
-        "parquet_panel_installation": "data/processed/panel_installation_df.parquet",
-        "parquet_meter_reading": "data/processed/meter_reading_df.parquet",
-        "parquet_raw": "data/processed/solar_df_unprocessed.parquet"
+        "raw_csv": "data/00_unprocessed/Solar_City_Micro_Inverters.csv",
+        "raw_parquet": "data/01_preprocessed/raw_parquet.parquet",
+        "installations_v1": "data/01_preprocessed/installations_v1.parquet",
+        "readings_v1": "data/01_preprocessed/readings_v1.parquet"
     },
     "preprocessing": {
         "rename_columns": {
@@ -11,12 +11,14 @@
             "DATE": "timestamp",
             "PANELS_REPORTING_MICRO_INVERTER": "num_panels",
             "WATTS": "power_watts_5min_avg",
-            "WATT_HOUR": "energy_watt_hour",
             "COMMUNITY_NAME": "community"
         },
-        "community_name_corrections": {"dartmouth": "Dartmouth"},
+        "community_name_corrections": {
+            "dartmouth": "Dartmouth",
+            "Musquodoboit Harb": "Musquodoboit Harbour"
+        },
         "date_format": "%Y.%m.%d %H:%M:%S",
-        "drop_columns": ["KILOWATT_HOUR", "FORWARD_SORTATION_AREA"]
+        "drop_columns": ["WATT_HOUR", "KILOWATT_HOUR", "FORWARD_SORTATION_AREA"]
     },
     "aggregation_methods": ["sum", "min", "mean", "median", "max"],
     "time_segmentation_interval_codes": ["H", "D", "M", "Y"],
