@@ -1,7 +1,8 @@
 {
     "filepaths": {
         "input_csv": "data/unprocessed/Solar_City_Micro_Inverters.csv",
-        "parquet_processed": "data/processed/solar_df.parquet",
+        "parquet_panel_installation": "data/processed/panel_installation_df.parquet",
+        "parquet_meter_reading": "data/processed/meter_reading_df.parquet",
         "parquet_raw": "data/processed/solar_df_unprocessed.parquet"
     },
     "preprocessing": {
@@ -11,12 +12,11 @@
             "PANELS_REPORTING_MICRO_INVERTER": "num_panels",
             "WATTS": "power_watts_5min_avg",
             "WATT_HOUR": "energy_watt_hour",
-            "COMMUNITY_NAME": "community",
-            "FORWARD_SORTATION_AREA": "fwd_sortation_area"
+            "COMMUNITY_NAME": "community"
         },
         "community_name_corrections": {"dartmouth": "Dartmouth"},
         "date_format": "%Y.%m.%d %H:%M:%S",
-        "drop_columns": ["KILOWATT_HOUR"]
+        "drop_columns": ["KILOWATT_HOUR", "FORWARD_SORTATION_AREA"]
     },
     "aggregation_methods": ["sum", "min", "mean", "median", "max"],
     "time_segmentation_interval_codes": ["H", "D", "M", "Y"],
