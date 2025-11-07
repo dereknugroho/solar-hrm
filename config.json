@@ -6,10 +6,10 @@
         "readings_v1": "data/01_preprocessed/readings_v1.parquet"
     },
     "preprocessing": {
-        "rename_columns": {
+        "rename_columns_preprocessing": {
             "SYSTEM_ID": "installation_id",
             "DATE": "timestamp",
-            "PANELS_REPORTING_MICRO_INVERTER": "num_panels",
+            "PANELS_REPORTING_MICRO_INVERTER": "panels_reporting",
             "WATTS": "power_watts_5min_avg",
             "COMMUNITY_NAME": "community"
         },
@@ -19,11 +19,5 @@
         },
         "date_format": "%Y.%m.%d %H:%M:%S",
         "drop_columns": ["WATT_HOUR", "KILOWATT_HOUR", "FORWARD_SORTATION_AREA"]
-    },
-    "aggregation_methods": ["sum", "min", "mean", "median", "max"],
-    "time_segmentation_interval_codes": ["H", "D", "M", "Y"],
-    "time_segmentation_interval": ["hour", "day", "month", "year"],
-    "logging": {
-        "preprocessing_logfile": "logs/preprocessing.log"
     }
 }
