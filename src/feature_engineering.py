@@ -17,8 +17,6 @@ from src.utils.utils import ensure_dataframe
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 
-@ensure_dataframe
-
 if __name__ == '__main__':
     installations = pd.read_parquet(from_root(FILEPATHS['installations_v1']))
     readings = pd.read_parquet(from_root(FILEPATHS['readings_v1']))
