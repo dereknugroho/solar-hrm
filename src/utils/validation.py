@@ -6,7 +6,7 @@ from src.utils.utils import ensure_dataframe
 def validate_initial_installations(installations: pd.DataFrame) -> None:
     expected_columns = {
         'installation_id',
-        'num_panels',
+        'panels_reporting',
         'community'
     }
     missing_columns = expected_columns - set(installations.columns)
@@ -24,13 +24,13 @@ def validate_initial_installations(installations: pd.DataFrame) -> None:
     if installations['installation_id'].isnull().any():
         raise ValueError(f'installation_id contains null values')
 
-    # Check num_panels integrity
-    if installations['num_panels'].dtype != 'int64':
-        raise TypeError(f'num_panels must be int64 dtype')
-    if installations['num_panels'].isnull().any():
-        raise ValueError(f'num_panels contains null values')
-    if installations['num_panels'].lt(0).any():
-        raise ValueError(f'num_panels must be greater than or equal to 0')
+    # Check panels_reporting integrity
+    if installations['panels_reporting'].dtype != 'int64':
+        raise TypeError(f'panels_reporting must be int64 dtype')
+    if installations['panels_reporting'].isnull().any():
+        raise ValueError(f'panels_reporting contains null values')
+    if installations['panels_reporting'].lt(0).any():
+        raise ValueError(f'panels_reporting must be greater than or equal to 0')
 
     # Check community integrity
     if installations['community'].dtype != 'category':
