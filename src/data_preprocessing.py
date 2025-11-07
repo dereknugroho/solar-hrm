@@ -27,7 +27,7 @@ def drop_unused_columns(solar_data: pd.DataFrame) -> pd.DataFrame:
 @ensure_dataframe
 def rename_columns(solar_data: pd.DataFrame) -> pd.DataFrame:
     """Rename columns specified in config.json."""
-    return solar_data.rename(columns=PREPROCESSING['rename_columns'])
+    return solar_data.rename(columns=PREPROCESSING['rename_columns_preprocessing'])
 
 @ensure_dataframe
 def drop_null_PK_combinations(solar_data: pd.DataFrame) -> pd.DataFrame:
@@ -61,7 +61,7 @@ def partition_solar_data(solar_data: pd.DataFrame):
     installations = (
         solar_data[[
             'installation_id',
-            'num_panels',
+            'panels_reporting',
             'community',
         ]]
         .copy()
