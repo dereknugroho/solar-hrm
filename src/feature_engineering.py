@@ -9,6 +9,7 @@ if __package__ is None:
 
 import pandas as pd
 
+from src.utils import pd_config
 from src.utils.config import FILEPATHS, FEATURE_ENGINEERING
 from src.utils.paths import from_root
 from src.utils.utils import ensure_dataframe
