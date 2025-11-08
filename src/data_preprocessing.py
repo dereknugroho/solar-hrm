@@ -10,14 +10,11 @@ if __package__ is None:
 import os
 import pandas as pd
 
+from src.utils import pd_config
 from src.utils.config import FILEPATHS, PREPROCESSING
 from src.utils.paths import from_root
 from src.utils.utils import ensure_dataframe
 from src.utils.validation import validate_initial_installations, validate_initial_readings
-
-# Show all rows and columns
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
 
 @ensure_dataframe
 def drop_unused_columns(solar_data: pd.DataFrame) -> pd.DataFrame:
@@ -91,7 +88,7 @@ def preprocess(preprocessed_exists: bool = False) -> pd.DataFrame:
     - Partition the data into two separate dataframes
     """
     if preprocessed_exists:
-        print(f'All parquets detected in data/01_preprocessed, reading parquets now...')
+        print(f'\U00002705 All parquets detected in data/01_preprocessed, reading parquets now...')
 
         # Load parquets into dataframes
         installations = pd.read_parquet(from_root(FILEPATHS['installations_v1']))
@@ -136,6 +133,8 @@ def preprocess(preprocessed_exists: bool = False) -> pd.DataFrame:
             from_root(FILEPATHS['readings_v1']),
             index=False,
         )
+        print(f'\U00002705 All parquets generated and saved in data/01_preprocessed.')
+
 
     return installations, readings
 
