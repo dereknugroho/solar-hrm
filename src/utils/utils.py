@@ -1,18 +1,19 @@
-import pandas as pd
-
+import os
+import shutil
 from functools import wraps
+
+import pandas as pd
 
 from src.utils.config import from_root
 
-# def ensure_dataframe(func):
-#     """Decorator to check that the first argument is a pandas DataFrame."""
-#     @wraps(func)
-#     def wrapper(df, *args, **kwargs):
-#         if not isinstance(df, pd.DataFrame):
-#             raise TypeError(f"{func.__name__}: argument must be a pandas DataFrame")
-#         return func(df, *args, **kwargs)
+def create_clean_directory(directory):
+    """Create clean target directory."""
+    dir_from_root = from_root(directory)
 
-#     return wrapper
+    if os.path.exists(dir_from_root):
+        shutil.rmtree(dir_from_root)
+
+    os.makedirs(dir_from_root, exist_ok=True)
 
 def ensure_dataframe(func):
     """Decorator to check that all arguments are a pandas DataFrame."""
@@ -26,8 +27,3 @@ def ensure_dataframe(func):
                 raise TypeError(f"{func.__name__}: all keyword arguments must be pandas DataFrames")
         return func(*args, **kwargs)
     return wrapper
-
-
-def fetch_parquet(filepath: str) -> pd.DataFrame:
-    """Load processed parquet into master dataframe."""
-    return pd.read_parquet(from_root(filepath))
