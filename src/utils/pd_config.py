@@ -12,6 +12,6 @@ def set_pandas_display_options():
     # Always display all columns
     pd.set_option('display.max_columns', None)
 
-    print('✅ Pandas display options configured.')
+    print('Pandas display options configured')
 
 set_pandas_display_options()
