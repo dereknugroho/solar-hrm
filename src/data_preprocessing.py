@@ -13,7 +13,7 @@ import pandas as pd
 from src.utils import pd_config
 from src.utils.config import FILEPATHS, PREPROCESSING
 from src.utils.paths import from_root
-from src.utils.utils import ensure_dataframe
+from src.utils.utils import create_clean_directory, ensure_dataframe
 from src.utils.validation import validate_initial_installations, validate_initial_readings
 
 @ensure_dataframe
@@ -78,18 +78,19 @@ def partition_solar_data(solar_data: pd.DataFrame):
 
 def preprocess(preprocessed_exists: bool = False) -> pd.DataFrame:
     """
-    Perform the following preprocessing tasks:
-    - Save a parquet of the unprocessed data
-    - Drop unused columns
-    - Rename columns
-    - Drop rows with null PK values
-    - Standardize column text values
-    - Convert column types
-    - Partition the data into two separate dataframes
+    If preprocessing has not occurred:
+        - Save a parquet of the unprocessed data
+        - Drop unused columns
+        - Rename columns
+        - Drop rows with invalid primary key combinations
+        - Standardize values in str columns
+        - Modify column data types
+        - Partition data
+        - Perform preliminary validation on partitioned data
+        - Save parquets of partitioned data
+    Otherwise: read the preprocessed data
     """
     if preprocessed_exists:
-        print(f'\U00002705 All parquets detected in data/01_preprocessed, reading parquets now...')
-
         # Load parquets into dataframes
         installations = pd.read_parquet(from_root(FILEPATHS['installations_v1']))
         readings = pd.read_parquet(from_root(FILEPATHS['readings_v1']))
@@ -97,8 +98,13 @@ def preprocess(preprocessed_exists: bool = False) -> pd.DataFrame:
         # Validate partitioned dataframes
         validate_initial_installations(installations)
         validate_initial_readings(readings)
+
+        print(f'\U00002705 Valid preprocessed parquets detected in data/01_preprocessed; parquets read successfully.')
     else:
-        print(f'No parquets detected in data/01_preprocessed, generating parquets now...')
+        print(f'Insufficient preprocessed parquets in data/01_preprocessed, generating new parquets now...')
+        # Clean up target directory
+        create_clean_directory(FILEPATHS['dir_preprocessing'])
+
         # Load csv into dataframe
         solar_data = pd.read_csv(
             from_root(FILEPATHS['raw_csv']),
@@ -133,8 +139,7 @@ def preprocess(preprocessed_exists: bool = False) -> pd.DataFrame:
             from_root(FILEPATHS['readings_v1']),
             index=False,
         )
-        print(f'\U00002705 All parquets generated and saved in data/01_preprocessed.')
-
+        print(f'\U00002705 Valid preprocessed parquets generated and saved in data/01_preprocessed')
 
     return installations, readings
 
@@ -147,17 +152,3 @@ if __name__ == '__main__':
     installations, readings = preprocess(
         preprocessed_exists=preprocessed_parquets_exist()
     )
-
-    print(f'installations (count: {len(installations)}) *****')
-    for col in installations.columns:
-        print(f'Column:\t{col} [{installations[col].dtype}]')
-        print(f'Number of unique values in {col}: {installations[col].nunique()}')
-        print(f'Number of NA values in {col}: {installations[col].isna().sum()}')
-        print('===========================')
-
-    print(f'readings (count: {len(readings)}) *****')
-    for col in readings.columns:
-        print(f'Column:\t{col} [{readings[col].dtype}]')
-        print(f'Number of unique values in {col}: {readings[col].nunique()}')
-        print(f'Number of NA values in {col}: {readings[col].isna().sum()}')
-        print('===========================')
