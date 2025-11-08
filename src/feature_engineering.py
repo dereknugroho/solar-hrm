@@ -14,8 +14,27 @@ from src.utils.paths import from_root
 from src.utils.utils import ensure_dataframe
 
 # Show all rows and columns
+pd.set_option('display.expand_frame_repr', False)
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
+
+@ensure_dataframe
+def aggregate_installations(installations: pd.DataFrame) -> pd.DataFrame:
+    """Generate statistics of panels_reporting for each installation."""
+    installations_agg = (
+        installations
+        .groupby('installation_id', as_index=False)
+        .agg(
+            community=('community', lambda x: x.mode()[0] if not x.mode().empty else None),
+            avg_panels_reporting=('panels_reporting', 'mean'),
+            max_panels_reporting=('panels_reporting', 'max'),
+            freq_max_panels_reporting=('panels_reporting',
+                lambda x: (x == x.max()).sum() / len(x)
+            ),
+        )
+    )
+
+    return installations_agg
 
 if __name__ == '__main__':
     installations = pd.read_parquet(from_root(FILEPATHS['installations_v1']))
@@ -35,27 +54,6 @@ if __name__ == '__main__':
         print(f'Number of NA values in {col}: {readings[col].isna().sum()}')
         print('===========================')
 
-    installations = (
-        installations
-        .groupby('installation_id', as_index=False)
-        .agg({
-            'panels_reporting': ['mean', 'max'],
-            'community': lambda x: x.mode()[0] if not x.mode().empty else None,
-        })
-    )
-
-    installations.columns = [
-        'installation_id',
-        'panels_reporting_avg',
-        'panels_reporting_max',
-        'community',
-    ]
-
-    installations = installations[[
-        'installation_id',
-        'community',
-        'panels_reporting_avg',
-        'panels_reporting_max',
-    ]]
+    installations = aggregate_installations(installations)
 
     print(f'installations (count: {len(installations)}):\n{installations}')
