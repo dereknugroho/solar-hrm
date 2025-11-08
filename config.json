@@ -1,11 +1,15 @@
 {
     "filepaths": {
+        "dir_preprocessing": "data/01_preprocessed",
+        "dir_feature_engineered": "data/02_feature_engineered",
+
         "raw_csv": "data/00_unprocessed/Solar_City_Micro_Inverters.csv",
-        "preprocessing_dir": "data/01_preprocessed",
         "raw_parquet": "data/01_preprocessed/raw_parquet.parquet",
+
         "installations_v1": "data/01_preprocessed/installations_v1.parquet",
-        "readings_v1": "data/01_preprocessed/readings_v1.parquet",
-        "installations_v2": "data/02_feature_engineered/installations_v2.parquet"
+        "installations_v2": "data/02_feature_engineered/installations_v2.parquet",
+
+        "readings_v1": "data/01_preprocessed/readings_v1.parquet"
     },
     "preprocessing": {
         "rename_columns_preprocessing": {
