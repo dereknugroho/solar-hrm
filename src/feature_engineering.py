@@ -12,7 +12,7 @@ import pandas as pd
 from src.utils import pd_config
 from src.utils.config import FILEPATHS, FEATURE_ENGINEERING
 from src.utils.paths import from_root
-from src.utils.utils import ensure_dataframe
+from src.utils.utils import create_clean_directory, ensure_dataframe
 
 @ensure_dataframe
 def aggregate_installations(installations: pd.DataFrame) -> pd.DataFrame:
@@ -30,32 +30,17 @@ def aggregate_installations(installations: pd.DataFrame) -> pd.DataFrame:
         )
     )
 
+    # Clean up target directory
+    create_clean_directory(FILEPATHS['dir_feature_engineered'])
+
     installations_agg.to_parquet(
         from_root(FILEPATHS['installations_v2']),
         index=False,
     )
-    print(f'Aggregated installations parquet generated and saved in data/02_feature_engineered')
+    print(f'\U00002705 Aggregated installations parquet generated and saved in data/02_feature_engineered')
 
     return installations_agg
 
 if __name__ == '__main__':
     installations = pd.read_parquet(from_root(FILEPATHS['installations_v1']))
     readings = pd.read_parquet(from_root(FILEPATHS['readings_v1']))
-
-    # print(f'installations (count: {len(installations)}) *****')
-    # for col in installations.columns:
-    #     print(f'Column:\t{col} [{installations[col].dtype}]')
-    #     print(f'Number of unique values in {col}: {installations[col].nunique()}')
-    #     print(f'Number of NA values in {col}: {installations[col].isna().sum()}')
-    #     print('===========================')
-
-    # print(f'readings (count: {len(readings)}) *****')
-    # for col in readings.columns:
-    #     print(f'Column:\t{col} [{readings[col].dtype}]')
-    #     print(f'Number of unique values in {col}: {readings[col].nunique()}')
-    #     print(f'Number of NA values in {col}: {readings[col].isna().sum()}')
-    #     print('===========================')
-
-    # installations = aggregate_installations(installations)
-
-    # print(f'installations (count: {len(installations)}):\n{installations}')
