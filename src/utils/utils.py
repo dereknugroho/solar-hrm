@@ -4,7 +4,11 @@ from functools import wraps
 
 import pandas as pd
 
-from src.utils.config import from_root
+from src.utils.config import from_root, FILEPATHS
+
+def check_parquets_exist(filepath_keys: list[str]) -> bool:
+    """Return True if all required parquet files exist."""
+    return all(os.path.exists(from_root(FILEPATHS[k])) for k in filepath_keys)
 
 def create_clean_directory(directory):
     """Create clean target directory."""
