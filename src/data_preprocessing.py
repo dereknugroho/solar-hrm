@@ -13,8 +13,8 @@ import pandas as pd
 from src.utils import pd_config
 from src.utils.config import FILEPATHS, PREPROCESSING
 from src.utils.paths import from_root
-from src.utils.utils import create_clean_directory, ensure_dataframe
-from src.utils.validation import validate_initial_installations, validate_initial_readings
+from src.utils.utils import check_parquets_exist, create_clean_directory, ensure_dataframe
+from src.utils.validation import validate_installations_preprocessed, validate_readings_preprocessed
 
 @ensure_dataframe
 def drop_unused_columns(solar_data: pd.DataFrame) -> pd.DataFrame:
@@ -24,7 +24,7 @@ def drop_unused_columns(solar_data: pd.DataFrame) -> pd.DataFrame:
 @ensure_dataframe
 def rename_columns(solar_data: pd.DataFrame) -> pd.DataFrame:
     """Rename columns specified in config.json."""
-    return solar_data.rename(columns=PREPROCESSING['rename_columns_preprocessing'])
+    return solar_data.rename(columns=PREPROCESSING['rename_columns'])
 
 @ensure_dataframe
 def drop_null_PK_combinations(solar_data: pd.DataFrame) -> pd.DataFrame:
@@ -52,7 +52,7 @@ def modify_column_dtypes(solar_data: pd.DataFrame) -> pd.DataFrame:
     return solar_data
 
 @ensure_dataframe
-def partition_solar_data(solar_data: pd.DataFrame):
+def partition_solar_data(solar_data: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Decompose dataframe solar_data into two dataframes with a one-to-many relationship."""
     # Construct dataframe representing solar panel installations
     installations = (
@@ -76,7 +76,7 @@ def partition_solar_data(solar_data: pd.DataFrame):
 
     return installations, readings
 
-def preprocess(preprocessed_exists: bool = False) -> pd.DataFrame:
+def preprocess(preprocessed_exists: bool = False) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     If preprocessing has not occurred:
         - Save a parquet of the unprocessed data
@@ -92,17 +92,17 @@ def preprocess(preprocessed_exists: bool = False) -> pd.DataFrame:
     """
     if preprocessed_exists:
         # Load parquets into dataframes
-        installations = pd.read_parquet(from_root(FILEPATHS['installations_v1']))
-        readings = pd.read_parquet(from_root(FILEPATHS['readings_v1']))
+        installations_preprocessed = pd.read_parquet(from_root(FILEPATHS['installations_preprocessed']))
+        readings_preprocessed = pd.read_parquet(from_root(FILEPATHS['readings_preprocessed']))
 
-        # Validate partitioned dataframes
-        validate_initial_installations(installations)
-        validate_initial_readings(readings)
+        # Validate partitioned preprocessed data
+        validate_installations_preprocessed(installations_preprocessed)
+        validate_readings_preprocessed(readings_preprocessed)
 
-        print(f'\U00002705 Valid preprocessed parquets detected in data/01_preprocessed; parquets read successfully.')
+        print(f"\U00002705 Successfully read valid preprocessed parquets in {FILEPATHS['dir_preprocessing']}")
     else:
-        print(f'Insufficient preprocessed parquets in data/01_preprocessed, generating new parquets now...')
-        # Clean up target directory
+        print(f"Invalid preprocessed parquets in {FILEPATHS['dir_preprocessing']}; generating new parquets now...")
+        # Clean up target directory for parquets
         create_clean_directory(FILEPATHS['dir_preprocessing'])
 
         # Load csv into dataframe
@@ -124,31 +124,40 @@ def preprocess(preprocessed_exists: bool = False) -> pd.DataFrame:
         solar_data = modify_column_dtypes(solar_data)
 
         # Partition solar_data into two separate dataframes
-        installations, readings = partition_solar_data(solar_data)
+        installations_preprocessed, readings_preprocessed = partition_solar_data(solar_data)
 
-        # Validate partitioned dataframes
-        validate_initial_installations(installations)
-        validate_initial_readings(readings)
+        # Validate partitioned preprocessed data
+        validate_installations_preprocessed(installations_preprocessed)
+        validate_readings_preprocessed(readings_preprocessed)
 
         # Save partitioned data into parquets
-        installations.to_parquet(
-            from_root(FILEPATHS['installations_v1']),
+        installations_preprocessed.to_parquet(
+            from_root(FILEPATHS['installations_preprocessed']),
             index=False,
         )
-        readings.to_parquet(
-            from_root(FILEPATHS['readings_v1']),
+        readings_preprocessed.to_parquet(
+            from_root(FILEPATHS['readings_preprocessed']),
             index=False,
         )
-        print(f'\U00002705 Valid preprocessed parquets generated and saved in data/01_preprocessed')
+        print(f"\U00002705 Valid preprocessed parquets generated and saved in {FILEPATHS['dir_preprocessing']}")
 
-    return installations, readings
-
-def preprocessed_parquets_exist() -> bool:
-    """Return True if all required parquet files exist."""
-    required_keys = ['raw_parquet', 'installations_v1', 'readings_v1']
-    return all(os.path.exists(from_root(FILEPATHS[k])) for k in required_keys)
+    return installations_preprocessed, readings_preprocessed
 
 if __name__ == '__main__':
-    installations, readings = preprocess(
-        preprocessed_exists=preprocessed_parquets_exist()
+    installations_preprocessed, readings_preprocessed = preprocess(
+        preprocessed_exists=check_parquets_exist(['raw_parquet', 'installations_preprocessed', 'readings_preprocessed'])
     )
+
+    print(f'***************\ninstallations_preprocessed summary (count: {len(installations_preprocessed)})\n***************')
+    for col in installations_preprocessed.columns:
+        print(f'Column:\t{col} [{installations_preprocessed[col].dtype}]')
+        print(f'Number of unique values in {col}: {installations_preprocessed[col].nunique()}')
+        print(f'Number of NA values in {col}: {installations_preprocessed[col].isna().sum()}')
+        print('===========================')
+
+    print(f'***************\nreadings_preprocessed summary (count: {len(readings_preprocessed)})\n***************')
+    for col in readings_preprocessed.columns:
+        print(f'Column:\t{col} [{readings_preprocessed[col].dtype}]')
+        print(f'Number of unique values in {col}: {readings_preprocessed[col].nunique()}')
+        print(f'Number of NA values in {col}: {readings_preprocessed[col].isna().sum()}')
+        print('===========================')
