@@ -7,12 +7,14 @@ if __package__ is None:
     if str(project_root) not in sys.path:
         sys.path.append(str(project_root))
 
+import os
+
 import pandas as pd
 
 from src.utils import pd_config
 from src.utils.config import FILEPATHS, FEATURE_ENGINEERING
 from src.utils.paths import from_root
-from src.utils.utils import check_parquets_exist, create_clean_directory, ensure_dataframe
+from src.utils.utils import create_clean_directory, ensure_dataframe
 
 @ensure_dataframe
 def build_installations_features(installations_preprocessed: pd.DataFrame) -> pd.DataFrame:
@@ -53,14 +55,18 @@ def build_feature_dataset(
         readings_feature_engineered = pd.read_parquet(from_root(FILEPATHS['readings_feature_engineered']))
 
         # To do: validate installations_feature_engineered and readings_feature_engineered
+
         print(f"\U00002705 Successfully read valid feature-engineered parquets in {FILEPATHS['dir_feature_engineered']}")
     else:
+        print(f"Invalid feature-engineered parquets in {FILEPATHS['dir_feature_engineered']}; generating new parquets now...")
         # Clean up target directory for feature-engineered parquets
         create_clean_directory(FILEPATHS['dir_feature_engineered'])
 
         # Build engineered features on preprocessed installations table and preprocessed readings table
         installations_feature_engineered = build_installations_features(installations_preprocessed)
         readings_feature_engineered = build_readings_features(readings_preprocessed)
+
+        # To do: validate installations_feature_engineered and readings_feature_engineered
 
         # Save feature-engineered data into parquets
         installations_feature_engineered.to_parquet(
@@ -75,12 +81,17 @@ def build_feature_dataset(
 
     return installations_feature_engineered, readings_feature_engineered
 
+def check_feature_engineered_parquets_exist() -> bool:
+    """Return True if all required preprocessed parquet files exist."""
+    filepath_keys = ['installations_feature_engineered', 'readings_feature_engineered']
+    return all(os.path.exists(from_root(FILEPATHS[k])) for k in filepath_keys)
+
 if __name__ == '__main__':
     installations_preprocessed = pd.read_parquet(from_root(FILEPATHS['installations_preprocessed']))
     readings_preprocessed = pd.read_parquet(from_root(FILEPATHS['readings_preprocessed']))
 
     installations_feature_engineered, readings_feature_engineered = build_feature_dataset(
-        feature_engineered_exists=check_parquets_exist(['installations_feature_engineered', 'readings_feature_engineered']),
+        feature_engineered_exists=check_feature_engineered_parquets_exist(),
         installations_preprocessed=installations_preprocessed,
         readings_preprocessed=readings_preprocessed,
     )
