@@ -13,7 +13,7 @@ import pandas as pd
 from src.utils import pd_config
 from src.utils.config import FILEPATHS, PREPROCESSING
 from src.utils.paths import from_root
-from src.utils.utils import check_parquets_exist, create_clean_directory, ensure_dataframe
+from src.utils.utils import create_clean_directory, ensure_dataframe
 from src.utils.validation import validate_installations_preprocessed, validate_readings_preprocessed
 
 @ensure_dataframe
@@ -143,9 +143,14 @@ def preprocess(preprocessed_exists: bool = False) -> tuple[pd.DataFrame, pd.Data
 
     return installations_preprocessed, readings_preprocessed
 
+def check_preprocessed_parquets_exist() -> bool:
+    """Return True if all required preprocessed parquet files exist."""
+    filepath_keys = ['raw_parquet', 'installations_preprocessed', 'readings_preprocessed']
+    return all(os.path.exists(from_root(FILEPATHS[k])) for k in filepath_keys)
+
 if __name__ == '__main__':
     installations_preprocessed, readings_preprocessed = preprocess(
-        preprocessed_exists=check_parquets_exist(['raw_parquet', 'installations_preprocessed', 'readings_preprocessed'])
+        preprocessed_exists=check_preprocessed_parquets_exist(),
     )
 
     print(f'***************\ninstallations_preprocessed summary (count: {len(installations_preprocessed)})\n***************')
