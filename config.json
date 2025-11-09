@@ -6,13 +6,14 @@
         "raw_csv": "data/00_unprocessed/Solar_City_Micro_Inverters.csv",
         "raw_parquet": "data/01_preprocessed/raw_parquet.parquet",
 
-        "installations_v1": "data/01_preprocessed/installations_v1.parquet",
-        "installations_v2": "data/02_feature_engineered/installations_v2.parquet",
+        "installations_preprocessed": "data/01_preprocessed/installations_preprocessed.parquet",
+        "installations_feature_engineered": "data/02_feature_engineered/installations_feature_engineered.parquet",
 
-        "readings_v1": "data/01_preprocessed/readings_v1.parquet"
+        "readings_preprocessed": "data/01_preprocessed/readings_preprocessed.parquet",
+        "readings_feature_engineered": "data/02_feature_engineered/readings_feature_engineered.parquet"
     },
     "preprocessing": {
-        "rename_columns_preprocessing": {
+        "rename_columns": {
             "SYSTEM_ID": "installation_id",
             "DATE": "timestamp",
             "PANELS_REPORTING_MICRO_INVERTER": "panels_reporting",
