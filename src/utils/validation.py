@@ -3,7 +3,7 @@ import pandas as pd
 from src.utils.utils import ensure_dataframe
 
 @ensure_dataframe
-def validate_initial_installations(installations: pd.DataFrame) -> None:
+def validate_installations_preprocessed(installations: pd.DataFrame) -> None:
     expected_columns = {
         'installation_id',
         'panels_reporting',
@@ -39,7 +39,7 @@ def validate_initial_installations(installations: pd.DataFrame) -> None:
         raise ValueError('category contains null values')
 
 @ensure_dataframe
-def validate_initial_readings(readings: pd.DataFrame) -> None:
+def validate_readings_preprocessed(readings: pd.DataFrame) -> None:
     expected_columns = {
         'installation_id',
         'timestamp',
