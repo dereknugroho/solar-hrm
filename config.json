@@ -1,7 +1,7 @@
 {
     "filepaths": {
-        "dir_preprocessing": "data/01_preprocessed",
-        "dir_feature_engineered": "data/02_feature_engineered",
+        "dir_preprocessing": "data/01_preprocessed/",
+        "dir_feature_engineered": "data/02_feature_engineered/",
 
         "raw_csv": "data/00_unprocessed/Solar_City_Micro_Inverters.csv",
         "raw_parquet": "data/01_preprocessed/raw_parquet.parquet",
