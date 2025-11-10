@@ -1,7 +1,7 @@
 PYTHON = python3
 
-all: clean preprocess feature_engineering
-run: preprocess feature_engineering
+all: clean preprocess feature_engineer
+run: preprocess feature_engineer
 
 clean:
 	rm -rf data/01_preprocessed
@@ -10,5 +10,5 @@ clean:
 preprocess:
 	$(PYTHON) -m core.pipeline.data_preprocessing
 
-feature_engineering:
+feature_engineer:
 	$(PYTHON) -m core.pipeline.feature_engineering
