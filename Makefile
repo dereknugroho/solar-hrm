@@ -1,14 +1,14 @@
 PYTHON = python3
 
-all: clean preprocess
+all: clean preprocess feature_engineering
+run: preprocess feature_engineering
 
 clean:
 	rm -rf data/01_preprocessed
 	rm -rf data/02_feature_engineered
-	echo "Non-raw data directories removed successfully"
 
 preprocess:
-    $(PYTHON) src/data_preprocessing.py
+	$(PYTHON) -m core.pipeline.data_preprocessing
 
-feature_engineer:
-	$(PYTHON) src/feature_engineering.py
+feature_engineering:
+	$(PYTHON) -m core.pipeline.feature_engineering
