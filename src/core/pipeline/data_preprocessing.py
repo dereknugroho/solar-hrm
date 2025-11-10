@@ -1,20 +1,11 @@
-import sys
-from pathlib import Path
-
-# --- Safety for running this script directly from src/ ---
-if __package__ is None:
-    project_root = Path(__file__).resolve().parents[1]
-    if str(project_root) not in sys.path:
-        sys.path.append(str(project_root))
-
 import os
 import pandas as pd
 
-from src.utils import pd_config
-from src.utils.config import FILEPATHS, PREPROCESSING
-from src.utils.paths import from_root
-from src.utils.utils import create_clean_directory, ensure_dataframe
-from src.utils.validation import validate_installations_preprocessed, validate_readings_preprocessed
+from core.utils import pd_config
+from core.utils.config import FILEPATHS, PREPROCESSING
+from core.utils.paths import from_root
+from core.utils.utils import create_clean_directory, ensure_dataframe
+from core.utils.validation import validate_installations_preprocessed, validate_readings_preprocessed
 
 @ensure_dataframe
 def drop_unused_columns(solar_data: pd.DataFrame) -> pd.DataFrame:

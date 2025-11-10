@@ -2,11 +2,11 @@ import os
 
 import pandas as pd
 
-from src.data_preprocessing import preprocess, check_preprocessed_parquets_exist
-from src.feature_engineering import build_feature_dataset, check_feature_engineered_parquets_exist
-from src.utils import pd_config
-from src.utils.config import FILEPATHS
-from src.utils.paths import from_root
+from core.pipeline.data_preprocessing import preprocess, check_preprocessed_parquets_exist
+from core.pipeline.feature_engineering import build_feature_dataset, check_feature_engineered_parquets_exist
+from core.utils import pd_config
+from core.utils.config import FILEPATHS
+from core.utils.paths import from_root
 
 def main():
     print(f'Initiating pipeline...')

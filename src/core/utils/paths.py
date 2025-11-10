@@ -11,8 +11,10 @@ def _find_project_root() -> Path:
         if (parent / "config.json").exists() or (parent / ".git").exists():
             return parent
 
-    # Fallback: assume src/ is directly under root
-    return current.parents[2]
+    raise RuntimeError("Could not find project root.")
+
+    # # Fallback: assume src/ is directly under root
+    # return current.parents[2]
 
 PROJECT_ROOT = _find_project_root()
 

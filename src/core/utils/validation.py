@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.utils.utils import ensure_dataframe
+from core.utils.utils import ensure_dataframe
 
 @ensure_dataframe
 def validate_installations_preprocessed(installations: pd.DataFrame) -> None:

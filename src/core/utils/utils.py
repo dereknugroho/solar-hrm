@@ -4,7 +4,7 @@ from functools import wraps
 
 import pandas as pd
 
-from src.utils.config import from_root
+from core.utils.config import from_root
 
 def create_clean_directory(directory):
     """Create clean target directory."""
