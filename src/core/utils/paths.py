@@ -13,9 +13,6 @@ def _find_project_root() -> Path:
 
     raise RuntimeError("Could not find project root.")
 
-    # # Fallback: assume src/ is directly under root
-    # return current.parents[2]
-
 PROJECT_ROOT = _find_project_root()
 
 def from_root(*parts) -> Path:
