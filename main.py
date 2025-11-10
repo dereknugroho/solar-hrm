@@ -16,19 +16,17 @@ def main():
         preprocessed_exists=check_preprocessed_parquets_exist()
     )
 
-    print(f'***************\ninstallations_preprocessed summary (count: {len(installations_preprocessed)})\n***************')
+    print(f'------------------------------------------------')
+    print(f'| installations_preprocessed (count: {len(installations_preprocessed)}) |')
+    print(f'------------------------------------------------')
     for col in installations_preprocessed.columns:
-        print(f'Column:\t{col} [{installations_preprocessed[col].dtype}]')
-        print(f'Number of unique values in {col}: {installations_preprocessed[col].nunique()}')
-        print(f'Number of NA values in {col}: {installations_preprocessed[col].isna().sum()}')
-        print('===========================')
+        print(f'Column: {col} [{installations_preprocessed[col].dtype}] [num_unique: {installations_preprocessed[col].nunique()}] [num_NA: {installations_preprocessed[col].isna().sum()}]')
 
-    print(f'***************\nreadings_preprocessed summary (count: {len(readings_preprocessed)})\n***************')
+    print(f'-------------------------------------------')
+    print(f'| readings_preprocessed (count: {len(readings_preprocessed)}) |')
+    print(f'-------------------------------------------')
     for col in readings_preprocessed.columns:
-        print(f'Column:\t{col} [{readings_preprocessed[col].dtype}]')
-        print(f'Number of unique values in {col}: {readings_preprocessed[col].nunique()}')
-        print(f'Number of NA values in {col}: {readings_preprocessed[col].isna().sum()}')
-        print('===========================')
+        print(f'Column: {col} [{readings_preprocessed[col].dtype}] [num_unique: {readings_preprocessed[col].nunique()}] [num_NA: {readings_preprocessed[col].isna().sum()}]')
 
     # Feature engineering
     installations_feature_engineered, readings_feature_engineered = build_feature_dataset(
@@ -37,19 +35,17 @@ def main():
         readings_preprocessed=readings_preprocessed,
     )
 
-    print(f'***************\ninstallations_feature_engineered summary (count: {len(installations_feature_engineered)})\n***************')
+    print(f'-------------------------------------------------')
+    print(f'| installations_feature_engineered (count: {len(installations_feature_engineered)}) |')
+    print(f'-------------------------------------------------')
     for col in installations_feature_engineered.columns:
-        print(f'Column:\t{col} [{installations_feature_engineered[col].dtype}]')
-        print(f'Number of unique values in {col}: {installations_feature_engineered[col].nunique()}')
-        print(f'Number of NA values in {col}: {installations_feature_engineered[col].isna().sum()}')
-        print('===========================')
+        print(f'Column: {col} [{installations_feature_engineered[col].dtype}] [num_unique: {installations_feature_engineered[col].nunique()}] [num_NA: {installations_feature_engineered[col].isna().sum()}]')
 
-    print(f'***************\nreadings_feature_engineered summary (count: {len(readings_feature_engineered)})\n***************')
+    print(f'-------------------------------------------------')
+    print(f'| readings_feature_engineered (count: {len(readings_feature_engineered)}) |')
+    print(f'-------------------------------------------------')
     for col in readings_feature_engineered.columns:
-        print(f'Column:\t{col} [{readings_feature_engineered[col].dtype}]')
-        print(f'Number of unique values in {col}: {readings_feature_engineered[col].nunique()}')
-        print(f'Number of NA values in {col}: {readings_feature_engineered[col].isna().sum()}')
-        print('===========================')
+        print(f'Column: {col} [{readings_feature_engineered[col].dtype}] [num_unique: {readings_feature_engineered[col].nunique()}] [num_NA: {readings_feature_engineered[col].isna().sum()}]')
 
 if __name__ == '__main__':
     main()
