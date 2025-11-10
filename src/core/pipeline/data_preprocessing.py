@@ -144,16 +144,14 @@ if __name__ == '__main__':
         preprocessed_exists=check_preprocessed_parquets_exist(),
     )
 
-    print(f'***************\ninstallations_preprocessed summary (count: {len(installations_preprocessed)})\n***************')
+    print(f'------------------------------------------------')
+    print(f'| installations_preprocessed (count: {len(installations_preprocessed)}) |')
+    print(f'------------------------------------------------')
     for col in installations_preprocessed.columns:
-        print(f'Column:\t{col} [{installations_preprocessed[col].dtype}]')
-        print(f'Number of unique values in {col}: {installations_preprocessed[col].nunique()}')
-        print(f'Number of NA values in {col}: {installations_preprocessed[col].isna().sum()}')
-        print('===========================')
+        print(f'Column: {col} [{installations_preprocessed[col].dtype}] [num_unique: {installations_preprocessed[col].nunique()}] [num_NA: {installations_preprocessed[col].isna().sum()}]')
 
-    print(f'***************\nreadings_preprocessed summary (count: {len(readings_preprocessed)})\n***************')
+    print(f'-------------------------------------------')
+    print(f'| readings_preprocessed (count: {len(readings_preprocessed)}) |')
+    print(f'-------------------------------------------')
     for col in readings_preprocessed.columns:
-        print(f'Column:\t{col} [{readings_preprocessed[col].dtype}]')
-        print(f'Number of unique values in {col}: {readings_preprocessed[col].nunique()}')
-        print(f'Number of NA values in {col}: {readings_preprocessed[col].isna().sum()}')
-        print('===========================')
+        print(f'Column: {col} [{readings_preprocessed[col].dtype}] [num_unique: {readings_preprocessed[col].nunique()}] [num_NA: {readings_preprocessed[col].isna().sum()}]')
