@@ -6,10 +6,13 @@ from core.utils import pd_config
 from core.utils.config import FILEPATHS, FEATURE_ENGINEERING
 from core.utils.paths import from_root
 from core.utils.utils import create_clean_directory, ensure_dataframe
+from core.utils.validation import validate_installations_feature_engineered, validate_readings_feature_engineered
 
 @ensure_dataframe
 def build_installations_features(installations_preprocessed: pd.DataFrame) -> pd.DataFrame:
     """Build additional features onto the installations table after grouping by installation_id."""
+    cat_dtype = installations_preprocessed['community'].dtype
+
     installations_feature_engineered = (
         installations_preprocessed
         .groupby('installation_id', as_index=False)
@@ -22,6 +25,8 @@ def build_installations_features(installations_preprocessed: pd.DataFrame) -> pd
             panels_reporting_avg=('panels_reporting', 'mean'),
         )
     )
+
+    installations_feature_engineered['community'] = installations_feature_engineered['community'].astype(cat_dtype)
 
     return installations_feature_engineered
 
@@ -45,7 +50,9 @@ def build_feature_dataset(
         installations_feature_engineered = pd.read_parquet(from_root(FILEPATHS['installations_feature_engineered']))
         readings_feature_engineered = pd.read_parquet(from_root(FILEPATHS['readings_feature_engineered']))
 
-        # To do: validate installations_feature_engineered and readings_feature_engineered
+        # Validate feature-engineered data
+        validate_installations_feature_engineered(installations_feature_engineered)
+        validate_readings_feature_engineered(readings_feature_engineered)
 
         print(f"\U00002705 Successfully read valid feature-engineered parquets in {FILEPATHS['dir_feature_engineered']}")
     else:
@@ -57,7 +64,9 @@ def build_feature_dataset(
         installations_feature_engineered = build_installations_features(installations_preprocessed)
         readings_feature_engineered = build_readings_features(readings_preprocessed)
 
-        # To do: validate installations_feature_engineered and readings_feature_engineered
+        # Validate feature-engineered data
+        validate_installations_feature_engineered(installations_feature_engineered)
+        validate_readings_feature_engineered(readings_feature_engineered)
 
         # Save feature-engineered data into parquets
         installations_feature_engineered.to_parquet(
@@ -87,16 +96,14 @@ if __name__ == '__main__':
         readings_preprocessed=readings_preprocessed,
     )
 
-    print(f'***************\ninstallations_feature_engineered summary (count: {len(installations_feature_engineered)})\n***************')
+    print(f'-------------------------------------------------')
+    print(f'| installations_feature_engineered (count: {len(installations_feature_engineered)}) |')
+    print(f'-------------------------------------------------')
     for col in installations_feature_engineered.columns:
-        print(f'Column:\t{col} [{installations_feature_engineered[col].dtype}]')
-        print(f'Number of unique values in {col}: {installations_feature_engineered[col].nunique()}')
-        print(f'Number of NA values in {col}: {installations_feature_engineered[col].isna().sum()}')
-        print('===========================')
+        print(f'Column: {col} [{installations_feature_engineered[col].dtype}] [num_unique: {installations_feature_engineered[col].nunique()}] [num_NA: {installations_feature_engineered[col].isna().sum()}]')
 
-    print(f'***************\nreadings_feature_engineered summary (count: {len(readings_feature_engineered)})\n***************')
+    print(f'-------------------------------------------------')
+    print(f'| readings_feature_engineered (count: {len(readings_feature_engineered)}) |')
+    print(f'-------------------------------------------------')
     for col in readings_feature_engineered.columns:
-        print(f'Column:\t{col} [{readings_feature_engineered[col].dtype}]')
-        print(f'Number of unique values in {col}: {readings_feature_engineered[col].nunique()}')
-        print(f'Number of NA values in {col}: {readings_feature_engineered[col].isna().sum()}')
-        print('===========================')
+        print(f'Column: {col} [{readings_feature_engineered[col].dtype}] [num_unique: {readings_feature_engineered[col].nunique()}] [num_NA: {readings_feature_engineered[col].isna().sum()}]')
