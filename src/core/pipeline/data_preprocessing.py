@@ -3,6 +3,7 @@ import pandas as pd
 
 from core.utils import pd_config
 from core.utils.config import FILEPATHS, PREPROCESSING
+from core.utils.logger import info
 from core.utils.paths import from_root
 from core.utils.utils import create_clean_directory, ensure_dataframe
 from core.utils.validation import validate_installations_preprocessed, validate_readings_preprocessed
@@ -90,9 +91,9 @@ def preprocess(preprocessed_exists: bool = False) -> tuple[pd.DataFrame, pd.Data
         validate_installations_preprocessed(installations_preprocessed)
         validate_readings_preprocessed(readings_preprocessed)
 
-        print(f"\U00002705 Successfully read valid preprocessed parquets in {FILEPATHS['dir_preprocessing']}")
+        info(f"\U00002705 Successfully read valid preprocessed parquets in {FILEPATHS['dir_preprocessing']}")
     else:
-        print(f"Invalid preprocessed parquets in {FILEPATHS['dir_preprocessing']}; generating new parquets now...")
+        info(f"Missing or invalid preprocessed parquets in {FILEPATHS['dir_preprocessing']}; generating new parquets now...")
         # Clean up target directory for parquets
         create_clean_directory(FILEPATHS['dir_preprocessing'])
 
@@ -130,7 +131,7 @@ def preprocess(preprocessed_exists: bool = False) -> tuple[pd.DataFrame, pd.Data
             from_root(FILEPATHS['readings_preprocessed']),
             index=False,
         )
-        print(f"\U00002705 Valid preprocessed parquets generated and saved in {FILEPATHS['dir_preprocessing']}")
+        info(f"\U00002705 Valid preprocessed parquets generated and saved in {FILEPATHS['dir_preprocessing']}")
 
     return installations_preprocessed, readings_preprocessed
 
