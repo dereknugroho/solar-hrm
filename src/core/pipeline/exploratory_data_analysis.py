@@ -21,7 +21,7 @@ def plot_panels_reporting_over_time(clean_unpartitioned_parquet: pd.DataFrame):
     # Create a date column
     clean_unpartitioned_parquet['date'] = clean_unpartitioned_parquet['timestamp'].dt.date
 
-    # Obtain the max panels reporting for each combination of installation and date
+    # Maximum number of panels reporting for each installation on each day
     daily_max = (
         clean_unpartitioned_parquet
         .groupby(['installation_id', 'date'])['panels_reporting']
@@ -29,7 +29,7 @@ def plot_panels_reporting_over_time(clean_unpartitioned_parquet: pd.DataFrame):
         .reset_index()
     )
 
-    # Obtain the daily sum of the total maximum panels reporting for each date
+    # Maximum total number of panels reporting on each day
     daily_sum = (
         daily_max
         .groupby('date')['panels_reporting']
@@ -40,9 +40,9 @@ def plot_panels_reporting_over_time(clean_unpartitioned_parquet: pd.DataFrame):
     # Generate scatterplot
     plt.figure(figsize=(10,5))
     plt.scatter(daily_sum['date'], daily_sum['panels_reporting'], s=10)
-    plt.title('Daily Sum of Total Maximum Panels Reporting')
+    plt.title('Daily Maximum Total Panels Reporting Over Time')
     plt.xlabel('Date')
-    plt.ylabel('Daily Sum of Total Maximum Panels Reporting')
+    plt.ylabel('Daily Maximum Total Panels Reporting')
     plt.grid(True)
     plt.tight_layout()
     plt.show()
