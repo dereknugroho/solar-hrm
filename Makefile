@@ -12,3 +12,6 @@ preprocess:
 
 features:
 	$(PYTHON) -m core.pipeline.feature_engineering
+
+eda:
+	$(PYTHON) -m core.pipeline.exploratory_data_analysis
