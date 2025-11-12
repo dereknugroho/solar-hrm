@@ -115,6 +115,12 @@ def preprocess(preprocessed_exists: bool = False) -> tuple[pd.DataFrame, pd.Data
         solar_data = standardize_column_text(solar_data)
         solar_data = modify_column_dtypes(solar_data)
 
+        # Save clean, unpartitioned data into parquet
+        solar_data.to_parquet(
+            from_root(FILEPATHS['clean_unpartitioned_parquet']),
+            index=False,
+        )
+
         # Partition solar_data into two separate dataframes
         installations_preprocessed, readings_preprocessed = partition_solar_data(solar_data)
 
@@ -141,9 +147,16 @@ def check_preprocessed_parquets_exist() -> bool:
     return all(os.path.exists(from_root(FILEPATHS[k])) for k in filepath_keys)
 
 if __name__ == '__main__':
-    installations_preprocessed, readings_preprocessed = preprocess(
-        preprocessed_exists=check_preprocessed_parquets_exist(),
-    )
+    installations_preprocessed, readings_preprocessed = preprocess(preprocessed_exists=check_preprocessed_parquets_exist())
+    clean_unpartitioned_parquet = pd.read_parquet(from_root(FILEPATHS['clean_unpartitioned_parquet']))
+    installations_preprocessed = pd.read_parquet(from_root(FILEPATHS['installations_preprocessed']))
+    readings_preprocessed = pd.read_parquet(from_root(FILEPATHS['readings_preprocessed']))
+
+    print(f'------------------------------------------------')
+    print(f'| clean_unpartitioned_parquet (count: {len(clean_unpartitioned_parquet)}) |')
+    print(f'------------------------------------------------')
+    for col in clean_unpartitioned_parquet.columns:
+        print(f'Column: {col} [{clean_unpartitioned_parquet[col].dtype}] [num_unique: {clean_unpartitioned_parquet[col].nunique()}] [num_NA: {clean_unpartitioned_parquet[col].isna().sum()}]')
 
     print(f'------------------------------------------------')
     print(f'| installations_preprocessed (count: {len(installations_preprocessed)}) |')
