@@ -1,5 +1,6 @@
 {
     "filepaths": {
+        "dir_log": "logs/",
         "dir_preprocessing": "data/01_preprocessed/",
         "dir_feature_engineered": "data/02_feature_engineered/",
 
