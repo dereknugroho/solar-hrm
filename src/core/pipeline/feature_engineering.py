@@ -4,6 +4,7 @@ import pandas as pd
 
 from core.utils import pd_config
 from core.utils.config import FILEPATHS, FEATURE_ENGINEERING
+from core.utils.logger import info
 from core.utils.paths import from_root
 from core.utils.utils import create_clean_directory, ensure_dataframe
 from core.utils.validation import validate_installations_feature_engineered, validate_readings_feature_engineered
@@ -54,9 +55,9 @@ def build_feature_dataset(
         validate_installations_feature_engineered(installations_feature_engineered)
         validate_readings_feature_engineered(readings_feature_engineered)
 
-        print(f"\U00002705 Successfully read valid feature-engineered parquets in {FILEPATHS['dir_feature_engineered']}")
+        info(f"\U00002705 Successfully read valid feature-engineered parquets in {FILEPATHS['dir_feature_engineered']}")
     else:
-        print(f"Invalid feature-engineered parquets in {FILEPATHS['dir_feature_engineered']}; generating new parquets now...")
+        info(f"Missing or invalid feature-engineered parquets in {FILEPATHS['dir_feature_engineered']}; generating new parquets now...")
         # Clean up target directory for feature-engineered parquets
         create_clean_directory(FILEPATHS['dir_feature_engineered'])
 
@@ -77,7 +78,7 @@ def build_feature_dataset(
             from_root(FILEPATHS['readings_feature_engineered']),
             index=False,
         )
-        print(f"\U00002705 Feature-engineered parquets generated and saved in {FILEPATHS['dir_feature_engineered']}")
+        info(f"\U00002705 Feature-engineered parquets generated and saved in {FILEPATHS['dir_feature_engineered']}")
 
     return installations_feature_engineered, readings_feature_engineered
 
