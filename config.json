@@ -5,7 +5,8 @@
         "dir_feature_engineered": "data/02_feature_engineered/",
 
         "raw_csv": "data/00_unprocessed/Solar_City_Micro_Inverters.csv",
-        "raw_parquet": "data/01_preprocessed/raw_parquet.parquet",
+        "raw_parquet": "data/01_preprocessed/raw.parquet",
+        "clean_unpartitioned_parquet": "data/01_preprocessed/clean_unpartitioned.parquet",
 
         "installations_preprocessed": "data/01_preprocessed/installations_preprocessed.parquet",
         "installations_feature_engineered": "data/02_feature_engineered/installations_feature_engineered.parquet",
