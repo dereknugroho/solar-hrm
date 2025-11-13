@@ -38,7 +38,7 @@ def modify_column_dtypes(solar_data: pd.DataFrame) -> pd.DataFrame:
         errors='coerce',
     )
 
-    solar_data['power_watts_5min_avg'] = solar_data['power_watts_5min_avg'].astype('float')
+    solar_data['avg_power_watts_5min'] = solar_data['avg_power_watts_5min'].astype('float')
     solar_data['community'] = solar_data['community'].astype('category')
 
     return solar_data
@@ -61,7 +61,7 @@ def partition_solar_data(solar_data: pd.DataFrame) -> tuple[pd.DataFrame, pd.Dat
         solar_data[[
             'installation_id',
             'timestamp',
-            'power_watts_5min_avg',
+            'avg_power_watts_5min',
         ]]
         .copy()
     )
