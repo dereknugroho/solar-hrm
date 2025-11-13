@@ -46,7 +46,7 @@ def build_feature_dataset(
     readings_preprocessed: pd.DataFrame,
     feature_engineered_exists: bool = False
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """"""
+    """Build features into installations and readings tables."""
     if feature_engineered_exists:
         installations_feature_engineered = pd.read_parquet(from_root(FILEPATHS['installations_feature_engineered']))
         readings_feature_engineered = pd.read_parquet(from_root(FILEPATHS['readings_feature_engineered']))
@@ -55,9 +55,9 @@ def build_feature_dataset(
         validate_installations_feature_engineered(installations_feature_engineered)
         validate_readings_feature_engineered(readings_feature_engineered)
 
-        info(f"\U00002705 Successfully read valid feature-engineered parquets in {FILEPATHS['dir_feature_engineered']}")
+        info(f"\U00002705 Successfully read and validated feature-engineered parquets in directory {FILEPATHS['dir_feature_engineered']}")
     else:
-        info(f"Missing or invalid feature-engineered parquets in {FILEPATHS['dir_feature_engineered']}; generating new parquets now...")
+        info(f"Missing or invalid feature-engineered parquets in directory {FILEPATHS['dir_feature_engineered']} \U00002014 generating parquets now...")
         # Clean up target directory for feature-engineered parquets
         create_clean_directory(FILEPATHS['dir_feature_engineered'])
 
@@ -78,7 +78,7 @@ def build_feature_dataset(
             from_root(FILEPATHS['readings_feature_engineered']),
             index=False,
         )
-        info(f"\U00002705 Feature-engineered parquets generated and saved in {FILEPATHS['dir_feature_engineered']}")
+        info(f"\U00002705 Successfully generated, saved, read, and validated feature-engineered parquets in directory {FILEPATHS['dir_feature_engineered']}")
 
     return installations_feature_engineered, readings_feature_engineered
 
@@ -92,9 +92,9 @@ if __name__ == '__main__':
     readings_preprocessed = pd.read_parquet(from_root(FILEPATHS['readings_preprocessed']))
 
     installations_feature_engineered, readings_feature_engineered = build_feature_dataset(
-        feature_engineered_exists=check_feature_engineered_parquets_exist(),
         installations_preprocessed=installations_preprocessed,
         readings_preprocessed=readings_preprocessed,
+        feature_engineered_exists=check_feature_engineered_parquets_exist(),
     )
 
     print(f'-------------------------------------------------')
