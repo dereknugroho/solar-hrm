@@ -21,6 +21,17 @@ def validate_dataframe(df: pd.DataFrame, expected_spec: dict) -> None:
             raise ValueError(f'{col} must be >= {min_val}')
 
 @ensure_dataframe
+def validate_cleaned_unpartitioned(cleaned_unpartitioned: pd.DataFrame) -> None:
+    spec = {
+        'installation_id': {'dtype': 'int64'},
+        'panels_reporting': {'dtype': 'int64', 'min': 0},
+        'community': {'dtype': 'category'},
+        'timestamp': {'dtype': 'datetime64[ns]'},
+        'power_watts_5min_avg': {'dtype': 'float64', 'min': 0},
+    }
+    validate_dataframe(cleaned_unpartitioned, spec)
+
+@ensure_dataframe
 def validate_installations_preprocessed(installations_preprocessed: pd.DataFrame) -> None:
     spec = {
         'installation_id': {'dtype': 'int64'},
