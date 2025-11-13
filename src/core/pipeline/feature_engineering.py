@@ -37,7 +37,7 @@ def build_readings_features(readings_preprocessed: pd.DataFrame) -> pd.DataFrame
     readings_feature_engineered = readings_preprocessed.copy()
 
     # Compute watt-hours per 5-minute interval
-    readings_feature_engineered['energy_prod_wh'] = readings_preprocessed['power_watts_5min_avg'] * 300 / 3600
+    readings_feature_engineered['energy_prod_wh_5min'] = readings_preprocessed['avg_power_watts_5min'] * 300 / 3600
 
     return readings_feature_engineered
 
