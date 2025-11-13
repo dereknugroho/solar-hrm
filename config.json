@@ -6,13 +6,15 @@
 
         "raw_csv": "data/00_unprocessed/Solar_City_Micro_Inverters.csv",
         "raw_parquet": "data/01_preprocessed/raw.parquet",
-        "clean_unpartitioned_parquet": "data/01_preprocessed/clean_unpartitioned.parquet",
+        "cleaned_unpartitioned": "data/01_preprocessed/cleaned_unpartitioned.parquet",
 
         "installations_preprocessed": "data/01_preprocessed/installations_preprocessed.parquet",
         "installations_feature_engineered": "data/02_feature_engineered/installations_feature_engineered.parquet",
 
         "readings_preprocessed": "data/01_preprocessed/readings_preprocessed.parquet",
-        "readings_feature_engineered": "data/02_feature_engineered/readings_feature_engineered.parquet"
+        "readings_feature_engineered": "data/02_feature_engineered/readings_feature_engineered.parquet",
+
+        "panels_reporting": "figures/panels_reporting.png"
     },
     "preprocessing": {
         "rename_columns": {
@@ -26,6 +28,7 @@
             "dartmouth": "Dartmouth",
             "Musquodoboit Harb": "Musquodoboit Harbour"
         },
+        "composite_key": ["installation_id", "timestamp"],
         "date_format": "%Y.%m.%d %H:%M:%S",
         "drop_columns": ["WATT_HOUR", "KILOWATT_HOUR", "FORWARD_SORTATION_AREA"]
     }
