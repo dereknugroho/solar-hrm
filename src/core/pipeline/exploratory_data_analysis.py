@@ -35,7 +35,7 @@ def plot_panels_reporting_over_time(cleaned_unpartitioned: pd.DataFrame, save: b
     plt.scatter(daily_sum['date'], daily_sum['panels_reporting'], s=10)
     plt.title('Daily Maximum Total Panels Reporting Over Time')
     plt.xlabel('Year')
-    plt.ylabel('Daily Maximum Total Panels Reporting')
+    plt.ylabel('Daily Maximum Total Panels Reporting\n(# of panels)')
     plt.grid(True)
     plt.tight_layout()
 
@@ -46,13 +46,38 @@ def plot_panels_reporting_over_time(cleaned_unpartitioned: pd.DataFrame, save: b
 
     return daily_sum
 
-def plot_total_production_over_time(
-    installations_feature_engineered: pd.DataFrame,
-    readings_feature_engineered: pd.DataFrame,
-    save: bool = False
-):
-    """Plot total energy production over time."""
-    pass
+def plot_total_energy_production_over_time(readings_feature_engineered: pd.DataFrame, save: bool = False):
+    """Plot total energy production (in megawatt-hours) over time."""
+    df = readings_feature_engineered.copy()
+
+    # Create a date column
+    df['date'] = readings_feature_engineered['timestamp'].dt.date
+
+    # Obtain the total amount of energy produced on each date
+    daily_sum = (
+        df
+        .groupby(['date'])['energy_prod_wh_5min']
+        .sum()
+        .reset_index()
+    )
+
+    daily_sum['energy_prod_mwh'] = daily_sum['energy_prod_wh_5min'] / 1_000_000
+
+    # Generate scatterplot
+    plt.figure(figsize=(10,5))
+    plt.scatter(daily_sum['date'], daily_sum['energy_prod_mwh'], s=10)
+    plt.title('Daily Energy Production Over Time')
+    plt.xlabel('Year')
+    plt.ylabel('Daily Energy Production\n(megawatt-hours)')
+    plt.grid(True)
+    plt.tight_layout()
+
+    if save:
+        plt.savefig(from_root(FILEPATHS['energy_production']))
+
+    plt.show()
+
+    return daily_sum
 
 if __name__ == '__main__':
     cleaned_unpartitioned = pd.read_parquet(from_root(FILEPATHS['cleaned_unpartitioned']))
@@ -78,4 +103,4 @@ if __name__ == '__main__':
         print(f'Column: {col} [{readings_feature_engineered[col].dtype}] [num_unique: {readings_feature_engineered[col].nunique()}] [num_NA: {readings_feature_engineered[col].isna().sum()}]')
 
     plot_panels_reporting_over_time(cleaned_unpartitioned, save=True)
-    plot_total_production_over_time(installations_feature_engineered, readings_feature_engineered)
+    plot_total_energy_production_over_time(readings_feature_engineered, save=True)
