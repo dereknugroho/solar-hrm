@@ -6,7 +6,7 @@ from core.utils.config import FILEPATHS, PREPROCESSING
 from core.utils.logger import info
 from core.utils.paths import from_root
 from core.utils.utils import create_clean_directory, ensure_dataframe
-from core.utils.validation import validate_installations_preprocessed, validate_readings_preprocessed
+from core.utils.validation import validate_cleaned_unpartitioned, validate_installations_preprocessed, validate_readings_preprocessed
 
 @ensure_dataframe
 def drop_unused_columns(solar_data: pd.DataFrame) -> pd.DataFrame:
@@ -19,9 +19,9 @@ def rename_columns(solar_data: pd.DataFrame) -> pd.DataFrame:
     return solar_data.rename(columns=PREPROCESSING['rename_columns'])
 
 @ensure_dataframe
-def drop_null_PK_combinations(solar_data: pd.DataFrame) -> pd.DataFrame:
+def drop_null_composite_key_combinations(solar_data: pd.DataFrame) -> pd.DataFrame:
     """Drop rows containing a null value in installation_id or timestamp."""
-    return solar_data.dropna(subset=['installation_id', 'timestamp'])
+    return solar_data.dropna(subset=PREPROCESSING['composite_key'])
 
 @ensure_dataframe
 def standardize_column_text(solar_data: pd.DataFrame) -> pd.DataFrame:
@@ -91,9 +91,9 @@ def preprocess(preprocessed_exists: bool = False) -> tuple[pd.DataFrame, pd.Data
         validate_installations_preprocessed(installations_preprocessed)
         validate_readings_preprocessed(readings_preprocessed)
 
-        info(f"\U00002705 Successfully read valid preprocessed parquets in {FILEPATHS['dir_preprocessing']}")
+        info(f"\U00002705 Successfully read and validated preprocessed parquets in directory {FILEPATHS['dir_preprocessing']}")
     else:
-        info(f"Missing or invalid preprocessed parquets in {FILEPATHS['dir_preprocessing']}; generating new parquets now...")
+        info(f"Missing or invalid preprocessed parquets in directory {FILEPATHS['dir_preprocessing']} \U00002014 generating parquets now...")
         # Clean up target directory for parquets
         create_clean_directory(FILEPATHS['dir_preprocessing'])
 
@@ -111,17 +111,20 @@ def preprocess(preprocessed_exists: bool = False) -> tuple[pd.DataFrame, pd.Data
         # Run preprocessing pipeline with parameters loaded from config.json
         solar_data = drop_unused_columns(solar_data)
         solar_data = rename_columns(solar_data)
-        solar_data = drop_null_PK_combinations(solar_data)
+        solar_data = drop_null_composite_key_combinations(solar_data)
         solar_data = standardize_column_text(solar_data)
         solar_data = modify_column_dtypes(solar_data)
 
-        # Save clean, unpartitioned data into parquet
+        # Save cleaned, unpartitioned data into parquet
         solar_data.to_parquet(
-            from_root(FILEPATHS['clean_unpartitioned_parquet']),
+            from_root(FILEPATHS['cleaned_unpartitioned']),
             index=False,
         )
 
-        # Partition solar_data into two separate dataframes
+        # Validate cleaned, unpartitioned data
+        validate_cleaned_unpartitioned(solar_data)
+
+        # Partition data into two separate dataframes
         installations_preprocessed, readings_preprocessed = partition_solar_data(solar_data)
 
         # Validate partitioned preprocessed data
@@ -137,26 +140,31 @@ def preprocess(preprocessed_exists: bool = False) -> tuple[pd.DataFrame, pd.Data
             from_root(FILEPATHS['readings_preprocessed']),
             index=False,
         )
-        info(f"\U00002705 Valid preprocessed parquets generated and saved in {FILEPATHS['dir_preprocessing']}")
+        info(f"\U00002705 Successfully generated, saved, read, and validated preprocessed parquets in directory {FILEPATHS['dir_preprocessing']}")
 
     return installations_preprocessed, readings_preprocessed
 
 def check_preprocessed_parquets_exist() -> bool:
     """Return True if all required preprocessed parquet files exist."""
-    filepath_keys = ['raw_parquet', 'installations_preprocessed', 'readings_preprocessed']
+    filepath_keys = [
+        'raw_parquet',
+        'cleaned_unpartitioned',
+        'installations_preprocessed',
+        'readings_preprocessed'
+    ]
     return all(os.path.exists(from_root(FILEPATHS[k])) for k in filepath_keys)
 
 if __name__ == '__main__':
     installations_preprocessed, readings_preprocessed = preprocess(preprocessed_exists=check_preprocessed_parquets_exist())
-    clean_unpartitioned_parquet = pd.read_parquet(from_root(FILEPATHS['clean_unpartitioned_parquet']))
+    cleaned_unpartitioned = pd.read_parquet(from_root(FILEPATHS['cleaned_unpartitioned']))
     installations_preprocessed = pd.read_parquet(from_root(FILEPATHS['installations_preprocessed']))
     readings_preprocessed = pd.read_parquet(from_root(FILEPATHS['readings_preprocessed']))
 
     print(f'------------------------------------------------')
-    print(f'| clean_unpartitioned_parquet (count: {len(clean_unpartitioned_parquet)}) |')
+    print(f'| cleaned_unpartitioned (count: {len(cleaned_unpartitioned)}) |')
     print(f'------------------------------------------------')
-    for col in clean_unpartitioned_parquet.columns:
-        print(f'Column: {col} [{clean_unpartitioned_parquet[col].dtype}] [num_unique: {clean_unpartitioned_parquet[col].nunique()}] [num_NA: {clean_unpartitioned_parquet[col].isna().sum()}]')
+    for col in cleaned_unpartitioned.columns:
+        print(f'Column: {col} [{cleaned_unpartitioned[col].dtype}] [num_unique: {cleaned_unpartitioned[col].nunique()}] [num_NA: {cleaned_unpartitioned[col].isna().sum()}]')
 
     print(f'------------------------------------------------')
     print(f'| installations_preprocessed (count: {len(installations_preprocessed)}) |')
