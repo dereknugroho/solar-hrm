@@ -1,13 +1,13 @@
 PYTHON = python3
 
-all: clean preprocess features
-run: preprocess features
+all: clean prep features
+run: prep features
 
 clean:
 	rm -rf data/01_preprocessed
 	rm -rf data/02_feature_engineered
 
-preprocess:
+prep:
 	$(PYTHON) -m core.pipeline.data_preprocessing
 
 features:
