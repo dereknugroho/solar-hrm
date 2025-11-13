@@ -27,7 +27,7 @@ def validate_cleaned_unpartitioned(cleaned_unpartitioned: pd.DataFrame) -> None:
         'panels_reporting': {'dtype': 'int64', 'min': 0},
         'community': {'dtype': 'category'},
         'timestamp': {'dtype': 'datetime64[ns]'},
-        'power_watts_5min_avg': {'dtype': 'float64', 'min': 0},
+        'avg_power_watts_5min': {'dtype': 'float64', 'min': 0},
     }
     validate_dataframe(cleaned_unpartitioned, spec)
 
@@ -45,7 +45,7 @@ def validate_readings_preprocessed(readings_preprocessed: pd.DataFrame) -> None:
     spec = {
         'installation_id': {'dtype': 'int64'},
         'timestamp': {'dtype': 'datetime64[ns]'},
-        'power_watts_5min_avg': {'dtype': 'float64', 'min': 0},
+        'avg_power_watts_5min': {'dtype': 'float64', 'min': 0},
     }
     validate_dataframe(readings_preprocessed, spec)
 
@@ -65,7 +65,7 @@ def validate_readings_feature_engineered(readings_feature_engineered: pd.DataFra
     spec = {
         'installation_id': {'dtype': 'int64'},
         'timestamp': {'dtype': 'datetime64[ns]'},
-        'power_watts_5min_avg': {'dtype': 'float64', 'min': 0},
-        'energy_prod_wh': {'dtype': 'float64', 'min': 0},
+        'avg_power_watts_5min': {'dtype': 'float64', 'min': 0},
+        'energy_prod_wh_5min': {'dtype': 'float64', 'min': 0},
     }
     validate_dataframe(readings_feature_engineered, spec)
