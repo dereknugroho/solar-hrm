@@ -1,17 +1,13 @@
-# Solar Energy Production - Halifax Regional Municipality
+# [DEPRECATED] Solar Energy Production - Halifax Regional Municipality
 
-Solar-HRM is an end-to-end ML prediction model for forecasting solar energy production in the Halifax Regional Municipality (HRM).
+**This project is now deprecated.**
 
-## To Do
+The primary source of training data for this ML project has been compromised.
 
-**Exploratory Phase**
-- Data Collection
-- Data Preprocessing
-- Exploratory Data Analysis
-- Feature Engineering
-- Data Partitioning
+Starting in late 2023, a substantial proportion of microinverters began failing to report energy readings for solar panel installations.
 
-**Predictive Phase**
-- ML Modelling
-- Model Evaluation
-- Forecasting and Results
+![Number of panels reporting](figures/panels_reporting.png)
+
+Recent microinverter readings would have served as the baseline for model prediction. Without this data, predictions would have such large confidence intervals that the model would not be useful for achieving business objectives.
+
+(Last commit: November 20, 2025)
