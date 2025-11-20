@@ -12,6 +12,6 @@ Starting in late 2023, a substantial proportion of microinverters began failing 
 
 Recent microinverter readings would have served as the baseline for model prediction. Without this data, predictions would have such large confidence intervals that the model would not be useful for achieving business objectives.
 
-This repository has now deprecated and archived for future reference.
+This repository is now deprecated and archived.
 
 (Last commit: November 20, 2025)
