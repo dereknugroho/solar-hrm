@@ -33,9 +33,9 @@ def plot_panels_reporting_over_time(cleaned_unpartitioned: pd.DataFrame, save: b
     # Generate scatterplot
     plt.figure(figsize=(10,5))
     plt.scatter(daily_sum['date'], daily_sum['panels_reporting'], s=10)
-    plt.title('Daily Maximum Total Panels Reporting Over Time')
+    plt.title('Number of active panels over time')
     plt.xlabel('Year')
-    plt.ylabel('Daily Maximum Total Panels Reporting\n(# of panels)')
+    plt.ylabel('Number of active panels')
     plt.grid(True)
     plt.tight_layout()
 
@@ -66,9 +66,9 @@ def plot_total_energy_production_over_time(readings_feature_engineered: pd.DataF
     # Generate scatterplot
     plt.figure(figsize=(10,5))
     plt.scatter(daily_sum['date'], daily_sum['energy_prod_mwh'], s=10)
-    plt.title('Daily Energy Production Over Time')
+    plt.title('Daily energy production over time')
     plt.xlabel('Year')
-    plt.ylabel('Daily Energy Production\n(megawatt-hours)')
+    plt.ylabel('Daily energy production\n(megawatt-hours)')
     plt.grid(True)
     plt.tight_layout()
 

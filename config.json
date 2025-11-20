@@ -14,7 +14,7 @@
         "readings_preprocessed": "data/01_preprocessed/readings_preprocessed.parquet",
         "readings_feature_engineered": "data/02_feature_engineered/readings_feature_engineered.parquet",
 
-        "panels_reporting": "figures/panels_reporting.png",
+        "panels_reporting": "figures/active_panels.png",
         "energy_production": "figures/energy_production.png"
     },
     "preprocessing": {
