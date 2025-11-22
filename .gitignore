@@ -6,7 +6,6 @@ __pycache__/
 *.pyc
 
 # Generated outputs
-data/
 logs/
 parquets/
 .ipynb_checkpoints/
