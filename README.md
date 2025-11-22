@@ -1,6 +1,5 @@
 # [DEPRECATED] Solar Energy Production - Halifax Regional Municipality
 
-[![status: deprecated](https://img.shields.io/badge/status-deprecated-red)]()
 [![status: deprecated](status-deprecated-red.svg)]()
 
 **THIS PROJECT IS NOW DEPRECATED**
