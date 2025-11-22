@@ -94,23 +94,5 @@ if __name__ == '__main__':
 
     create_figures_directory()
 
-    print(f'------------------------------------------------')
-    print(f'| cleaned_unpartitioned (count: {len(cleaned_unpartitioned)}) |')
-    print(f'------------------------------------------------')
-    for col in cleaned_unpartitioned.columns:
-        print(f'Column: {col} [{cleaned_unpartitioned[col].dtype}] [num_unique: {cleaned_unpartitioned[col].nunique()}] [num_NA: {cleaned_unpartitioned[col].isna().sum()}]')
-    
-    print(f'-------------------------------------------------')
-    print(f'| installations_feature_engineered (count: {len(installations_feature_engineered)}) |')
-    print(f'-------------------------------------------------')
-    for col in installations_feature_engineered.columns:
-        print(f'Column: {col} [{installations_feature_engineered[col].dtype}] [num_unique: {installations_feature_engineered[col].nunique()}] [num_NA: {installations_feature_engineered[col].isna().sum()}]')
-
-    print(f'-------------------------------------------------')
-    print(f'| readings_feature_engineered (count: {len(readings_feature_engineered)}) |')
-    print(f'-------------------------------------------------')
-    for col in readings_feature_engineered.columns:
-        print(f'Column: {col} [{readings_feature_engineered[col].dtype}] [num_unique: {readings_feature_engineered[col].nunique()}] [num_NA: {readings_feature_engineered[col].isna().sum()}]')
-
     plot_panels_reporting_over_time(cleaned_unpartitioned, save=True)
     plot_total_energy_production_over_time(readings_feature_engineered, save=True)
