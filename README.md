@@ -1,6 +1,7 @@
 # [DEPRECATED] Solar Energy Production - Halifax Regional Municipality
 
 [![status: deprecated](https://img.shields.io/badge/status-deprecated-red)]()
+[![status: deprecated](figures/status-deprecated-red.svg)]()
 
 **THIS PROJECT IS NOW DEPRECATED**
 
@@ -12,6 +13,8 @@ Starting in late 2023, a substantial proportion of microinverters began failing 
 
 Recent microinverter readings would have served as the baseline for model prediction. Without this data, predictions would have such large confidence intervals that the model would not be useful for achieving business objectives.
 
+If you wish to execute the partial pipeline, simply execute `make partial`.
+
 This repository is now deprecated and archived.
 
-(Last commit: November 20, 2025)
+(Last commit: November 22, 2025)
