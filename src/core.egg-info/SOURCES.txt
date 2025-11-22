@@ -1,5 +1,7 @@
 README.md
 pyproject.toml
+src/core/__init__.py
+src/core/main.py
 src/core.egg-info/PKG-INFO
 src/core.egg-info/SOURCES.txt
 src/core.egg-info/dependency_links.txt
@@ -7,12 +9,12 @@ src/core.egg-info/requires.txt
 src/core.egg-info/top_level.txt
 src/core/pipeline/__init__.py
 src/core/pipeline/data_preprocessing.py
-src/core/pipeline/eda.py
+src/core/pipeline/exploratory_data_analysis.py
 src/core/pipeline/feature_engineering.py
 src/core/utils/__init__.py
 src/core/utils/config.py
+src/core/utils/logger.py
 src/core/utils/paths.py
 src/core/utils/pd_config.py
-src/core/utils/standalone_execution.py
 src/core/utils/utils.py
 src/core/utils/validation.py
