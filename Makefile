@@ -1,17 +1,19 @@
 PYTHON = python3
+ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-partial: clean prep features eda
-run: prep features
+pipeline: clean prep features eda
+run: prep features eda
 
 clean:
-	rm -rf data/01_preprocessed
-	rm -rf data/02_feature_engineered
+	rm -rf $(ROOT)data/01_preprocessed
+	rm -rf $(ROOT)data/02_feature_engineered
+	rm -rf $(ROOT)figures/
 
 prep:
-	$(PYTHON) -m core.pipeline.data_preprocessing
+	$(PYTHON) src/core/pipeline/data_preprocessing.py
 
 features:
-	$(PYTHON) -m core.pipeline.feature_engineering
+	$(PYTHON) src/core/pipeline/feature_engineering.py
 
 eda:
-	$(PYTHON) -m core.pipeline.exploratory_data_analysis
+	$(PYTHON) src/core/pipeline/exploratory_data_analysis.py
