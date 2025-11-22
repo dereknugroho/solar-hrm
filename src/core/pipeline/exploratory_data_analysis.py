@@ -3,6 +3,7 @@ import pandas as pd
 
 from core.utils import pd_config
 from core.utils.config import FILEPATHS
+from core.utils.logger import info
 from core.utils.paths import from_root
 from core.utils.utils import ensure_dataframe
 from core.utils.validation import validate_installations_feature_engineered, validate_readings_feature_engineered
@@ -42,7 +43,7 @@ def plot_panels_reporting_over_time(cleaned_unpartitioned: pd.DataFrame, save: b
     if save:
         plt.savefig(from_root(FILEPATHS['panels_reporting']))
 
-    plt.show()
+    info(f"\U00002705 Successfully generated and saved plot [Number of active panels over time] to {from_root(FILEPATHS['panels_reporting'])}")
 
     return daily_sum
 
@@ -75,7 +76,7 @@ def plot_total_energy_production_over_time(readings_feature_engineered: pd.DataF
     if save:
         plt.savefig(from_root(FILEPATHS['energy_production']))
 
-    plt.show()
+    info(f"\U00002705 Successfully generated and saved plot [Daily energy production over time] to {from_root(FILEPATHS['energy_production'])}")
 
     return daily_sum
 
