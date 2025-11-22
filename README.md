@@ -12,9 +12,13 @@ Starting in late 2023, a substantial proportion of microinverters began failing 
 
 Recent microinverter readings would have served as the baseline for model prediction. Without this data, predictions would have such large confidence intervals that the model would not be useful for achieving business objectives.
 
-In order to execute the partial pipeline, use this command from the project root:
+In order to execute the partial pipeline, execute these commands:
 
-```make pipeline```
+```
+git clone git@github.com:dereknugroho/solar-hrm.git
+cd solar-hrm
+make pipeline
+```
 
 This repository is now deprecated and archived.
 
