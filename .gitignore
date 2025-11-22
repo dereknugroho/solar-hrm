@@ -7,7 +7,7 @@ __pycache__/
 
 # Generated outputs
 logs/
-parquets/
+*.parquet
 .ipynb_checkpoints/
 
 # To-do list
