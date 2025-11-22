@@ -55,9 +55,9 @@ def build_feature_dataset(
         validate_installations_feature_engineered(installations_feature_engineered)
         validate_readings_feature_engineered(readings_feature_engineered)
 
-        info(f"\U00002705 Successfully read and validated feature-engineered parquets in directory {FILEPATHS['dir_feature_engineered']}")
+        info(f"\U00002705 Successfully read and validated feature-engineered parquets in {FILEPATHS['dir_feature_engineered']} directory")
     else:
-        info(f"Missing or invalid feature-engineered parquets in directory {FILEPATHS['dir_feature_engineered']} \U00002014 generating parquets now...")
+        info(f"Missing or invalid feature-engineered parquets in {FILEPATHS['dir_feature_engineered']} directory \U00002014 generating parquets now...")
         # Clean up target directory for feature-engineered parquets
         create_clean_directory(FILEPATHS['dir_feature_engineered'])
 
@@ -78,7 +78,7 @@ def build_feature_dataset(
             from_root(FILEPATHS['readings_feature_engineered']),
             index=False,
         )
-        info(f"\U00002705 Successfully generated, saved, read, and validated feature-engineered parquets in directory {FILEPATHS['dir_feature_engineered']}")
+        info(f"\U00002705 Successfully generated, saved, read, and validated feature-engineered parquets in {FILEPATHS['dir_feature_engineered']} directory")
 
     return installations_feature_engineered, readings_feature_engineered
 

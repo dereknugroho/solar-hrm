@@ -45,7 +45,7 @@ def plot_panels_reporting_over_time(cleaned_unpartitioned: pd.DataFrame, save: b
     if save:
         plt.savefig(from_root(FILEPATHS['panels_reporting']))
 
-    info(f"\U00002705 Successfully generated and saved plot [Number of active panels over time] to {from_root(FILEPATHS['panels_reporting'])}")
+    info(f"\U00002705 Successfully generated and saved plot [Number of active panels over time] to {FILEPATHS['panels_reporting']}")
 
     return daily_sum
 
@@ -78,14 +78,14 @@ def plot_total_energy_production_over_time(readings_feature_engineered: pd.DataF
     if save:
         plt.savefig(from_root(FILEPATHS['energy_production']))
 
-    info(f"\U00002705 Successfully generated and saved plot [Daily energy production over time] to {from_root(FILEPATHS['energy_production'])}")
+    info(f"\U00002705 Successfully generated and saved plot [Daily energy production over time] to {FILEPATHS['energy_production']}")
 
     return daily_sum
 
 def create_figures_directory():
     """Create empty figures directory."""
     Path(FILEPATHS['dir_figures']).mkdir(parents=True, exist_ok=True)
-    info(f"\U00002705 Successfully created empty directory {from_root(FILEPATHS['dir_figures'])}")
+    info(f"\U00002705 Successfully created empty {FILEPATHS['dir_figures']} directory")
 
 if __name__ == '__main__':
     cleaned_unpartitioned = pd.read_parquet(from_root(FILEPATHS['cleaned_unpartitioned']))
