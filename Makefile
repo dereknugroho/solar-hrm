@@ -1,6 +1,6 @@
 PYTHON = python3
 
-all: clean prep features eda
+partial: clean prep features eda
 run: prep features
 
 clean:
