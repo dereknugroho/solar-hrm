@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -9,7 +11,7 @@ from core.utils.utils import ensure_dataframe
 from core.utils.validation import validate_installations_feature_engineered, validate_readings_feature_engineered
 
 def plot_panels_reporting_over_time(cleaned_unpartitioned: pd.DataFrame, save: bool = False) -> pd.DataFrame:
-    """Plot the number of panels reporting over time."""
+    """Plot number of panels reporting over time."""
     df = cleaned_unpartitioned.copy()
 
     # Create a date column
@@ -80,10 +82,17 @@ def plot_total_energy_production_over_time(readings_feature_engineered: pd.DataF
 
     return daily_sum
 
+def create_figures_directory():
+    """Create empty figures directory."""
+    Path(FILEPATHS['dir_figures']).mkdir(parents=True, exist_ok=True)
+    info(f"\U00002705 Successfully created empty directory {from_root(FILEPATHS['dir_figures'])}")
+
 if __name__ == '__main__':
     cleaned_unpartitioned = pd.read_parquet(from_root(FILEPATHS['cleaned_unpartitioned']))
     installations_feature_engineered = pd.read_parquet(from_root(FILEPATHS['installations_feature_engineered']))
     readings_feature_engineered = pd.read_parquet(from_root(FILEPATHS['readings_feature_engineered']))
+
+    create_figures_directory()
 
     print(f'------------------------------------------------')
     print(f'| cleaned_unpartitioned (count: {len(cleaned_unpartitioned)}) |')
